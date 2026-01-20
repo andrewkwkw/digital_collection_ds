@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ArchiveImage extends Model
+class ArchiveFile extends Model
 {
+    protected $table = 'archive_files';
+    
     protected $fillable = [
         'archive_id',
-        'image_path',
+        'archive_path',
         'order',
     ];
 

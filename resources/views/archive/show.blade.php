@@ -9,28 +9,20 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if ($archive->images->count() > 0)
+                    @if ($archive->files->count() > 0)
                     <div class="mb-8">
-                        <div class="mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                            <img
-                                id="mainImageTag"
-                                src="{{ asset('storage/' . $archive->images->first()->image_path) }}"
-                                alt="{{ $archive->title }}"
-                                class="w-full max-h-96 object-contain">
-                        </div>
-
-                        @if ($archive->images->count() > 1)
-                        <div class="grid grid-cols-4 gap-2">
-                            @foreach ($archive->images as $image)
-                            <img
-                                src="{{ asset('storage/' . $image->image_path) }}"
-                                alt="Thumbnail"
-                                class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition"
-                                data-src="{{ asset('storage/' . $image->image_path) }}"
-                                onclick="changeImage(this)">
+                        <h3 class="text-lg font-semibold mb-4">{{ __('File PDF') }}</h3>
+                        <div class="space-y-2">
+                            @foreach ($archive->files as $file)
+                            <div class="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
+                                <span class="text-red-600 font-bold">PDF</span>
+                                <a href="{{ asset('storage/' . $file->archive_path) }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline flex-1">
+                                    {{ basename($file->archive_path) }}
+                                </a>
+                                <a href="{{ asset('storage/' . $file->archive_path) }}" download class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">{{ __('Download') }}</a>
+                            </div>
                             @endforeach
                         </div>
-                        @endif
                     </div>
                     @endif
 
@@ -65,24 +57,10 @@
                             </div>
                             @endif
 
-                            @if ($archive->language)
-                            <div>
-                                <dt class="font-semibold text-gray-700 dark:text-gray-300">{{ __('Bahasa') }}</dt>
-                                <dd class="text-gray-600 dark:text-gray-400">{{ $archive->language }}</dd>
-                            </div>
-                            @endif
-
                             @if ($archive->publisher)
                             <div>
                                 <dt class="font-semibold text-gray-700 dark:text-gray-300">{{ __('Penerbit') }}</dt>
                                 <dd class="text-gray-600 dark:text-gray-400">{{ $archive->publisher }}</dd>
-                            </div>
-                            @endif
-
-                            @if ($archive->identifier)
-                            <div>
-                                <dt class="font-semibold text-gray-700 dark:text-gray-300">{{ __('Identifikasi') }}</dt>
-                                <dd class="text-gray-600 dark:text-gray-400">{{ $archive->identifier }}</dd>
                             </div>
                             @endif
 
@@ -159,12 +137,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function changeImage(el) {
-            const mainImage = document.getElementById('mainImageTag');
-            mainImage.src = el.dataset.src;
-        }
-    </script>
 
 </x-app-layout>

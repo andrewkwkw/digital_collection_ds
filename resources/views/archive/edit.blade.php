@@ -13,40 +13,43 @@
                         @csrf
                         @method('PATCH')
 
-                        <!-- Current Images -->
-                        @if ($archive->images->count() > 0)
-                            <div class="mb-6">
-                                <h3 class="text-lg font-semibold mb-4">{{ __('Gambar Saat Ini') }}</h3>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    @foreach ($archive->images as $image)
-                                        <div class="relative">
-                                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Archive image" class="w-full h-24 object-cover rounded border border-gray-300 dark:border-gray-600">
-                                            <form action="{{ route('archive.deleteImage', $image) }}" method="POST" class="absolute top-0 right-0 m-1">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700" onclick="return confirm('Hapus gambar?')">✕</button>
-                                            </form>
-                                        </div>
-                                    @endforeach
+                        <!-- Current Documents -->
+                        @if ($archive->files->count() > 0)
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4">{{ __('PDF Saat Ini') }}</h3>
+                            <div class="space-y-2">
+                                @foreach ($archive->files as $file)
+                                <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-red-600 font-bold">PDF</span>
+                                        <a href="{{ asset('storage/' . $file->archive_path) }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                            {{ basename($file->archive_path) }}
+                                        </a>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button type="button" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700" onclick="deleteFile('{{ $file->id }}')">{{ __('Hapus') }}</button>
+                                    </div>
                                 </div>
+                                @endforeach
                             </div>
+                        </div>
                         @endif
 
-                        <!-- Add More Images -->
+                        <!-- Add More Documents -->
                         <div class="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                            <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ __('Tambah Gambar (Opsional)') }}
+                            <label for="documents" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ __('Tambah PDF (Opsional, maksimal 100MB per file)') }}
                             </label>
                             <div class="mt-2">
-                                <input type="file" id="images" name="images[]" multiple accept="image/*"
+                                <input type="file" id="documents" name="documents[]" multiple accept="application/pdf"
                                     class="block w-full text-sm text-gray-500 dark:text-gray-400
                                     file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
                                     file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900
                                     file:text-blue-700 dark:file:text-blue-200 hover:file:bg-blue-100 dark:hover:file:bg-blue-800" />
                             </div>
-                            <div id="imagePreview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
-                            <x-input-error :messages="$errors->get('images')" class="mt-2" />
-                            <x-input-error :messages="$errors->get('images.*')" class="mt-2" />
+                            <div id="documentList" class="mt-4 space-y-2"></div>
+                            <x-input-error :messages="$errors->get('documents')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('documents.*')" class="mt-2" />
                         </div>
 
                         <!-- Metadata -->
@@ -62,7 +65,7 @@
 
                             <!-- Creator -->
                             <div class="mb-4">
-                                <x-input-label for="creator" :value="__('Pembuat')" />
+                                <x-input-label for="creator" :value="__('Creator')" />
                                 <x-text-input id="creator" class="block mt-1 w-full" type="text" name="creator" :value="old('creator', $archive->creator)" />
                                 <x-input-error :messages="$errors->get('creator')" class="mt-2" />
                             </div>
@@ -117,25 +120,11 @@
                                     <x-input-error :messages="$errors->get('format')" class="mt-2" />
                                 </div>
 
-                                <!-- Identifier -->
-                                <div>
-                                    <x-input-label for="identifier" :value="__('Identifikasi')" />
-                                    <x-text-input id="identifier" class="block mt-1 w-full" type="text" name="identifier" :value="old('identifier', $archive->identifier)" />
-                                    <x-input-error :messages="$errors->get('identifier')" class="mt-2" />
-                                </div>
-
                                 <!-- Source -->
                                 <div>
                                     <x-input-label for="source" :value="__('Sumber')" />
                                     <x-text-input id="source" class="block mt-1 w-full" type="text" name="source" :value="old('source', $archive->source)" />
                                     <x-input-error :messages="$errors->get('source')" class="mt-2" />
-                                </div>
-
-                                <!-- Language -->
-                                <div>
-                                    <x-input-label for="language" :value="__('Bahasa')" />
-                                    <x-text-input id="language" class="block mt-1 w-full" type="text" name="language" :value="old('language', $archive->language)" />
-                                    <x-input-error :messages="$errors->get('language')" class="mt-2" />
                                 </div>
 
                                 <!-- Relation -->
@@ -145,11 +134,11 @@
                                     <x-input-error :messages="$errors->get('relation')" class="mt-2" />
                                 </div>
 
-                                <!-- Coverage -->
+                                <!-- Reach -->
                                 <div>
-                                    <x-input-label for="coverage" :value="__('Cakupan')" />
-                                    <x-text-input id="coverage" class="block mt-1 w-full" type="text" name="coverage" :value="old('coverage', $archive->coverage)" />
-                                    <x-input-error :messages="$errors->get('coverage')" class="mt-2" />
+                                    <x-input-label for="reach" :value="__('Jangkauan')" />
+                                    <x-text-input id="reach" class="block mt-1 w-full" type="text" name="reach" :value="old('reach', $archive->reach)" />
+                                    <x-input-error :messages="$errors->get('reach')" class="mt-2" />
                                 </div>
 
                                 <!-- Rights -->
@@ -162,7 +151,7 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between mt-6">
                             <a href="{{ route('archive.show', $archive) }}" class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
                                 {{ __('Kembali') }}
                             </a>
@@ -177,22 +166,48 @@
     </div>
 
     <script>
-        document.getElementById('images').addEventListener('change', function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
-            
+        function deleteFile(fileId) {
+            if (!confirm('Hapus PDF ini?')) return;
+
+            fetch(`/archive-file/${fileId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus file');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan');
+                });
+        }
+
+        document.getElementById('documents').addEventListener('change', function(e) {
+            const docList = document.getElementById('documentList');
+            docList.innerHTML = '';
+
             Array.from(this.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const div = document.createElement('div');
-                    div.className = 'relative';
-                    div.innerHTML = `
-                        <img src="${event.target.result}" alt="Preview" class="w-full h-24 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
-                        <span class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">+${index + 1}</span>
-                    `;
-                    preview.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600';
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-red-600 font-bold">PDF</span>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">${file.name}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">${fileSize} MB</p>
+                        </div>
+                    </div>
+                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">+${index + 1}</span>
+                `;
+                docList.appendChild(div);
             });
         });
     </script>

@@ -22,22 +22,6 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($archives as $archive)
                         <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
-                            <!-- Image Preview -->
-                            @if ($archive->images->count() > 0)
-                                <div class="relative h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                                    <img src="{{ asset('storage/' . $archive->images->first()->image_path) }}" alt="{{ $archive->title }}" class="w-full h-full object-cover">
-                                    @if ($archive->images->count() > 1)
-                                        <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">
-                                            +{{ $archive->images->count() - 1 }}
-                                        </div>
-                                    @endif
-                                </div>
-                            @else
-                                <div class="h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                                    <span class="text-gray-400">No Image</span>
-                                </div>
-                            @endif
-
                             <!-- Content -->
                             <div class="p-4">
                                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 truncate">

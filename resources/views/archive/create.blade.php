@@ -12,21 +12,21 @@
                     <form method="POST" action="{{ route('archive.store') }}" enctype="multipart/form-data" id="archiveForm">
                         @csrf
 
-                        <!-- Images Upload -->
+                        <!-- Documents Upload -->
                         <div class="mb-6">
-                            <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ __('Gambar (required, minimal 1)') }}
+                            <label for="documents" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ __('Upload PDF (required, minimal 1, maksimal 100MB per file)') }}
                             </label>
                             <div class="mt-2">
-                                <input type="file" id="images" name="images[]" multiple accept="image/*" required
+                                <input type="file" id="documents" name="documents[]" multiple accept="application/pdf" required
                                     class="block w-full text-sm text-gray-500 dark:text-gray-400
                                     file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
                                     file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900
                                     file:text-blue-700 dark:file:text-blue-200 hover:file:bg-blue-100 dark:hover:file:bg-blue-800" />
                             </div>
-                            <div id="imagePreview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
-                            <x-input-error :messages="$errors->get('images')" class="mt-2" />
-                            <x-input-error :messages="$errors->get('images.*')" class="mt-2" />
+                            <div id="documentList" class="mt-4 space-y-2"></div>
+                            <x-input-error :messages="$errors->get('documents')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('documents.*')" class="mt-2" />
                         </div>
 
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
@@ -41,7 +41,7 @@
 
                             <!-- Creator -->
                             <div class="mb-4">
-                                <x-input-label for="creator" :value="__('Pembuat')" />
+                                <x-input-label for="creator" :value="__('Creator')" />
                                 <x-text-input id="creator" class="block mt-1 w-full" type="text" name="creator" :value="old('creator')" />
                                 <x-input-error :messages="$errors->get('creator')" class="mt-2" />
                             </div>
@@ -96,25 +96,11 @@
                                     <x-input-error :messages="$errors->get('format')" class="mt-2" />
                                 </div>
 
-                                <!-- Identifier -->
-                                <div>
-                                    <x-input-label for="identifier" :value="__('Identifikasi')" />
-                                    <x-text-input id="identifier" class="block mt-1 w-full" type="text" name="identifier" :value="old('identifier')" />
-                                    <x-input-error :messages="$errors->get('identifier')" class="mt-2" />
-                                </div>
-
                                 <!-- Source -->
                                 <div>
                                     <x-input-label for="source" :value="__('Sumber')" />
                                     <x-text-input id="source" class="block mt-1 w-full" type="text" name="source" :value="old('source')" />
                                     <x-input-error :messages="$errors->get('source')" class="mt-2" />
-                                </div>
-
-                                <!-- Language -->
-                                <div>
-                                    <x-input-label for="language" :value="__('Bahasa')" />
-                                    <x-text-input id="language" class="block mt-1 w-full" type="text" name="language" :value="old('language')" />
-                                    <x-input-error :messages="$errors->get('language')" class="mt-2" />
                                 </div>
 
                                 <!-- Relation -->
@@ -124,11 +110,11 @@
                                     <x-input-error :messages="$errors->get('relation')" class="mt-2" />
                                 </div>
 
-                                <!-- Coverage -->
+                                <!-- Reach -->
                                 <div>
-                                    <x-input-label for="coverage" :value="__('Cakupan')" />
-                                    <x-text-input id="coverage" class="block mt-1 w-full" type="text" name="coverage" :value="old('coverage')" />
-                                    <x-input-error :messages="$errors->get('coverage')" class="mt-2" />
+                                    <x-input-label for="reach" :value="__('Jangkauan')" />
+                                    <x-text-input id="reach" class="block mt-1 w-full" type="text" name="reach" :value="old('reach')" />
+                                    <x-input-error :messages="$errors->get('reach')" class="mt-2" />
                                 </div>
 
                                 <!-- Rights -->
@@ -157,21 +143,24 @@
 
     <script>
         document.getElementById('images').addEventListener('change', function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
+            const docList = document.getElementById('documentList');
+            docList.innerHTML = '';
             
             Array.from(this.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const div = document.createElement('div');
-                    div.className = 'relative';
-                    div.innerHTML = `
-                        <img src="${event.target.result}" alt="Preview" class="w-full h-40 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
-                        <span class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">${index + 1}</span>
-                    `;
-                    preview.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600';
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-red-600 font-bold">PDF</span>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">${file.name}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">${fileSize} MB</p>
+                        </div>
+                    </div>
+                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">${index + 1}</span>
+                `;
+                docList.appendChild(div);
             });
         });
     </script>

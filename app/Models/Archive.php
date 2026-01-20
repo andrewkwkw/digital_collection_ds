@@ -19,11 +19,9 @@ class Archive extends Model
         'date',
         'type',
         'format',
-        'identifier',
         'source',
-        'language',
         'relation',
-        'coverage',
+        'reach',
         'rights',
     ];
 
@@ -36,8 +34,14 @@ class Archive extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function files(): HasMany
+    {
+        return $this->hasMany(ArchiveFile::class)->orderBy('order');
+    }
+    
+    // Keep images() for backward compatibility
     public function images(): HasMany
     {
-        return $this->hasMany(ArchiveImage::class)->orderBy('order');
+        return $this->files();
     }
 }

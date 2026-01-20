@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive;
+use App\Models\ArchiveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -37,14 +38,12 @@ class ArchiveController extends Controller
             'date' => ['nullable', 'date'],
             'type' => ['nullable', 'string', 'max:255'],
             'format' => ['nullable', 'string', 'max:255'],
-            'identifier' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'string', 'max:255'],
-            'language' => ['nullable', 'string', 'max:255'],
             'relation' => ['nullable', 'string', 'max:255'],
-            'coverage' => ['nullable', 'string', 'max:255'],
+            'reach' => ['nullable', 'string', 'max:255'],
             'rights' => ['nullable', 'string', 'max:255'],
-            'images' => ['required', 'array', 'min:1'],
-            'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
+            'documents' => ['required', 'array', 'min:1'],
+            'documents.*' => ['required', 'mimes:pdf', 'max:102400'],
         ]);
 
         $archive = Archive::create([
@@ -52,11 +51,11 @@ class ArchiveController extends Controller
             ...$validated,
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $image) {
-                $path = $image->store('archives', 'public');
-                $archive->images()->create([
-                    'image_path' => $path,
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $index => $document) {
+                $path = $document->store('archives/documents', 'public');
+                $archive->files()->create([
+                    'archive_path' => $path,
                     'order' => $index,
                 ]);
             }
@@ -91,24 +90,22 @@ class ArchiveController extends Controller
             'date' => ['nullable', 'date'],
             'type' => ['nullable', 'string', 'max:255'],
             'format' => ['nullable', 'string', 'max:255'],
-            'identifier' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'string', 'max:255'],
-            'language' => ['nullable', 'string', 'max:255'],
             'relation' => ['nullable', 'string', 'max:255'],
-            'coverage' => ['nullable', 'string', 'max:255'],
+            'reach' => ['nullable', 'string', 'max:255'],
             'rights' => ['nullable', 'string', 'max:255'],
-            'images' => ['nullable', 'array'],
-            'images.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
+            'documents' => ['nullable', 'array'],
+            'documents.*' => ['nullable', 'mimes:pdf', 'max:102400'],
         ]);
 
         $archive->update($validated);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $image) {
-                $path = $image->store('archives', 'public');
-                $archive->images()->create([
-                    'image_path' => $path,
-                    'order' => $archive->images()->count() + $index,
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $index => $document) {
+                $path = $document->store('archives/documents', 'public');
+                $archive->files()->create([
+                    'archive_path' => $path,
+                    'order' => $archive->files()->count() + $index,
                 ]);
             }
         }
@@ -120,8 +117,8 @@ class ArchiveController extends Controller
     {
         $this->authorize('delete', $archive);
 
-        foreach ($archive->images as $image) {
-            Storage::disk('public')->delete($image->image_path);
+        foreach ($archive->files as $file) {
+            Storage::disk('public')->delete($file->archive_path);
         }
 
         $archive->delete();
@@ -129,15 +126,19 @@ class ArchiveController extends Controller
         return redirect()->route('archive.index')->with('success', 'Arsip berhasil dihapus');
     }
 
-    public function deleteImage(\App\Models\ArchiveImage $archiveImage)
+    public function deleteFile(ArchiveFile $archiveFile)
     {
-        $archive = $archiveImage->archive;
+        $archive = $archiveFile->archive;
 
         $this->authorize('update', $archive);
 
-        Storage::disk('public')->delete($archiveImage->image_path);
-        $archiveImage->delete();
+        Storage::disk('public')->delete($archiveFile->archive_path);
+        $archiveFile->delete();
 
-        return back()->with('success', 'Gambar berhasil dihapus');
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'File berhasil dihapus']);
+        }
+
+        return back()->with('success', 'File berhasil dihapus');
     }
 }

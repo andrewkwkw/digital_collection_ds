@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 // Archive routes (untuk semua user yang sudah login)
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('archive', ArchiveController::class);
-    Route::delete('archive-image/{archiveImage}', [ArchiveController::class, 'deleteImage'])->name('archive.deleteImage');
+    Route::delete('archive-file/{archiveFile}', [ArchiveController::class, 'deleteFile'])->name('archive.deleteFile');
 });
 
 // Admin management routes (hanya untuk superadmin)
