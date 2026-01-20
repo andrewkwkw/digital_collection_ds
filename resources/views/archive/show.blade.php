@@ -17,7 +17,7 @@
                             <div class="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
                                 <span class="text-red-600 font-bold">PDF</span>
                                 <a href="{{ asset('storage/' . $file->archive_path) }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline flex-1">
-                                    {{ basename($file->archive_path) }}
+                                    {{ $file->original_filename ?? basename($file->archive_path) }}
                                 </a>
                                 <a href="{{ asset('storage/' . $file->archive_path) }}" download class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">{{ __('Download') }}</a>
                             </div>

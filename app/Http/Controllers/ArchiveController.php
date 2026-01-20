@@ -53,9 +53,11 @@ class ArchiveController extends Controller
 
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $index => $document) {
+                $originalName = $document->getClientOriginalName();
                 $path = $document->store('archives/documents', 'public');
                 $archive->files()->create([
                     'archive_path' => $path,
+                    'original_filename' => $originalName,
                     'order' => $index,
                 ]);
             }
@@ -102,9 +104,11 @@ class ArchiveController extends Controller
 
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $index => $document) {
-                $path = $document->store('archives/documents', 'public');
+                $originalName = $document->getClientOriginalName();
+                $path = $document->storeAs('archives/documents', $originalName, 'public');
                 $archive->files()->create([
                     'archive_path' => $path,
+                    'original_filename' => $originalName,
                     'order' => $archive->files()->count() + $index,
                 ]);
             }
