@@ -9,16 +9,16 @@ class ArchivePolicy
 {
     public function view(User $user, Archive $archive): bool
     {
-        return $user->id === $archive->user_id || $user->isSuperAdmin();
+        return in_array($user->role, ['admin', 'superadmin']);
     }
 
     public function update(User $user, Archive $archive): bool
     {
-        return $user->id === $archive->user_id || $user->isSuperAdmin();
+        return in_array($user->role, ['admin', 'superadmin']);
     }
 
     public function delete(User $user, Archive $archive): bool
     {
-        return $user->id === $archive->user_id || $user->isSuperAdmin();
+        return in_array($user->role, ['admin', 'superadmin']);
     }
 }

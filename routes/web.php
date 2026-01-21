@@ -5,9 +5,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArchiveController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [ArchiveController::class, 'welcome'])->name('welcome');
+
+// Route untuk melihat detail arsip (guest/public) - HARUS SEBELUM resource route
+Route::get('/collections/{id}', [ArchiveController::class, 'showGuest'])->name('archive.show-guest')->where('id', '[0-9]+');
+
+// Route untuk melihat detail file/preview (guest/public)
+Route::get('/collections/{id}/view', [ArchiveController::class, 'showFile'])->name('archive.show_file')->where('id', '[0-9]+');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,7 +25,9 @@ Route::middleware('auth')->group(function () {
 
 // Archive routes (untuk semua user yang sudah login)
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('archive', ArchiveController::class);
+    Route::resource('archive', ArchiveController::class)->except(['show']);
+    // Route khusus admin show
+    Route::get('/archive/{archive}/show', [ArchiveController::class, 'show'])->name('archive.show');
     Route::delete('archive-file/{archiveFile}', [ArchiveController::class, 'deleteFile'])->name('archive.deleteFile');
 });
 

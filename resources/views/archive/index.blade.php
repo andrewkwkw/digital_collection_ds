@@ -36,7 +36,7 @@
 
                                 <!-- Actions -->
                                 <div class="mt-4 flex gap-2">
-                                    <a href="{{ route('archive.show', $archive) }}" class="flex-1 text-center px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded hover:bg-blue-200 dark:hover:bg-blue-800">
+                                    <a href="{{ route('archive.show', $archive->id) }}" class="flex-1 text-center px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded hover:bg-blue-200 dark:hover:bg-blue-800">
                                         Lihat
                                     </a>
                                     <a href="{{ route('archive.edit', $archive) }}" class="flex-1 text-center px-3 py-2 text-sm bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 rounded hover:bg-yellow-200 dark:hover:bg-yellow-800">

@@ -22,9 +22,11 @@
                                 <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
                                     <div class="flex items-center gap-3">
                                         <span class="text-red-600 font-bold">PDF</span>
-                                        <a href="{{ asset('storage/' . $file->archive_path) }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
-                                            {{ basename($file->archive_path) }}
+                                        <a href="{{ asset('storage/' . $file->archive_path) }}" target="_blank"
+                                            class="text-blue-600 dark:text-blue-400 hover:underline flex-1">
+                                            {{ $file->original_filename ?? basename($file->archive_path) }}
                                         </a>
+
                                     </div>
                                     <div class="flex gap-2">
                                         <button type="button" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700" onclick="deleteFile('{{ $file->id }}')">{{ __('Hapus') }}</button>

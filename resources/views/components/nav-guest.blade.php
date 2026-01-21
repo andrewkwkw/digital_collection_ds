@@ -19,19 +19,20 @@
             <div class="flex items-center gap-4">
                 <x-theme-toggle />
                 @if (Route::has('login'))
-                @auth
-                <a
-                    href="{{ url('/dashboard') }}"
-                    class="px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition">
-                    {{ __('Dashboard') }}
-                </a>
-                @else
-                <a
-                    href="{{ route('login') }}"
-                    class="px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition">
-                    {{ __('Login') }}
-                </a>
-                @endauth
+                    @auth
+                        <a
+                            href="{{ url('/dashboard') }}"
+                            class="px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition">
+                            {{ __('Dashboard') }}
+                        </a>
+                    @endauth
+                    @guest
+                        <a
+                            href="{{ route('login') }}"
+                            class="px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition">
+                            {{ __('Login') }}
+                        </a>
+                    @endguest
                 @endif
             </div>
         </div>

@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function index()
     {
         $admins = User::where('role', 'admin')->paginate(10);
-        return view('admin.index', compact('admins'));
+        return view('tambah admin.index', compact('admins'));
     }
 
     public function create()

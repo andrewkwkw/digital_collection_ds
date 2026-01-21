@@ -12,6 +12,7 @@ class ArchiveFile extends Model
     protected $fillable = [
         'archive_id',
         'archive_path',
+        'original_filename',
         'order',
     ];
 

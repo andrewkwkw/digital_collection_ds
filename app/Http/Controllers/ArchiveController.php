@@ -12,14 +12,51 @@ class ArchiveController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['welcome', 'showGuest', 'showFile']);
     }
 
-    public function index()
+    /**
+     * Show welcome page with recent archives and collections
+     */
+    public function welcome(Request $request)
     {
-        $archives = Archive::where('user_id', Auth::id())->latest()->paginate(10);
-        return view('archive.index', compact('archives'));
+        $search = $request->input('search', '');
+        $filter = $request->input('filter', '');
+
+        // Get all unique types for filter dropdown
+        $types = Archive::select('type')
+            ->distinct()
+            ->whereNotNull('type')
+            ->pluck('type');
+
+        // Get recent archives (5 items)
+        $recentArchives = Archive::latest()
+            ->limit(5)
+            ->get();
+
+        // Get archives grouped by type with search and filter capability
+        $query = Archive::query();
+
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        if ($filter) {
+            $query->where('type', $filter);
+        }
+
+        $archivesByType = $query->get()->groupBy('type');
+
+        return view('welcome', compact('recentArchives', 'archivesByType', 'types', 'search', 'filter'));
     }
+
+public function index()
+{
+    // Mengambil semua arsip dari semua user
+    $archives = Archive::latest()->paginate(10); 
+    
+    return view('archive.index', compact('archives'));
+}
 
     public function create()
     {
@@ -70,6 +107,15 @@ class ArchiveController extends Controller
     {
         $this->authorize('view', $archive);
         return view('archive.show', compact('archive'));
+    }
+
+    /**
+     * Show archive detail for guest/public users
+     */
+    public function showGuest($id)
+    {
+        $archive = Archive::findOrFail($id);
+        return view('archive.show-guest', compact('archive'));
     }
 
     public function edit(Archive $archive)
@@ -145,4 +191,13 @@ class ArchiveController extends Controller
 
         return back()->with('success', 'File berhasil dihapus');
     }
+
+    public function showFile($id)
+{
+    // Cari data file berdasarkan ID
+    $file = ArchiveFile::findOrFail($id); 
+
+    // Kita load view baru khusus untuk menampilkan PDF
+    return view('archive.viewer-public', compact('file'));
+}
 }
