@@ -21,19 +21,19 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admins = User::where('role', 'admin')->paginate(10);
+        // Mengambil daftar user dengan role admin
+        $admins = User::where('role', 'admin')->latest()->paginate(10);
+        // Pastikan path view sesuai dengan struktur folder Anda, contoh: 'tambah admin.index'
         return view('tambah admin.index', compact('admins'));
     }
 
     public function create()
     {
-        $this->authorize('create', User::class);
-        return view('admin.create');
+        return view('tambah admin.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', User::class);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -47,38 +47,19 @@ class AdminController extends Controller
             'role' => 'admin',
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil ditambahkan');
+        return redirect()->route('admin.index')->with('success', 'Akun Admin berhasil didaftarkan.');
     }
 
-    public function edit(User $admin)
-    {
-        $this->authorize('update', $admin);
-        return view('admin.edit', compact('admin'));
-    }
-
-    public function update(Request $request, User $admin)
-    {
-        $this->authorize('update', $admin);
-        
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $admin->id],
-        ]);
-
-        $admin->update($validated);
-
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil diperbarui');
-    }
+    // Method edit dan update TELAH DIHAPUS untuk privasi data personal admin
 
     public function destroy(User $admin)
     {
-        $this->authorize('delete', $admin);
-        
-        if ($admin->isSuperAdmin()) {
-            return back()->with('error', 'Tidak bisa menghapus superadmin');
+        // Proteksi agar tidak menghapus diri sendiri atau sesama superadmin
+        if ($admin->role === 'superadmin') {
+            return back()->with('error', 'Tidak bisa menghapus akun superadmin.');
         }
 
         $admin->delete();
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus');
+        return redirect()->route('admin.index')->with('success', 'Akses Admin telah dicabut (akun dihapus).');
     }
 }

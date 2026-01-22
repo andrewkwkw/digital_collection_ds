@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ArchiveController::class, 'welcome'])->name('welcome');
@@ -13,9 +14,9 @@ Route::get('/collections/{id}', [ArchiveController::class, 'showGuest'])->name('
 // Route untuk melihat detail file/preview (guest/public)
 Route::get('/collections/{id}/view', [ArchiveController::class, 'showFile'])->name('archive.show_file')->where('id', '[0-9]+');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Admin management routes (hanya untuk superadmin)
 Route::middleware(['auth', 'verified', 'is_superadmin'])->group(function () {
-    Route::resource('admin', AdminController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('admin', AdminController::class)->except(['edit', 'update']);
 });
 
 require __DIR__.'/auth.php';
