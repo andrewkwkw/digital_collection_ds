@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive;
+use Spatie\PdfToImage\Pdf;
 use App\Models\ArchiveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,26 +16,20 @@ class ArchiveController extends Controller
         $this->middleware('auth')->except(['welcome', 'showGuest', 'showFile']);
     }
 
-    /**
-     * Show welcome page with recent archives and collections
-     */
     public function welcome(Request $request)
     {
         $search = $request->input('search', '');
         $filter = $request->input('filter', '');
 
-        // Get all unique types for filter dropdown
         $types = Archive::select('type')
             ->distinct()
             ->whereNotNull('type')
             ->pluck('type');
 
-        // Get recent archives (5 items)
         $recentArchives = Archive::latest()
             ->limit(5)
             ->get();
 
-        // Get archives grouped by type with search and filter capability
         $query = Archive::query();
 
         if ($search) {
@@ -50,13 +45,13 @@ class ArchiveController extends Controller
         return view('welcome', compact('recentArchives', 'archivesByType', 'types', 'search', 'filter'));
     }
 
-public function index()
-{
-    // Mengambil semua arsip dari semua user
-    $archives = Archive::latest()->paginate(10); 
-    
-    return view('archive.index', compact('archives'));
-}
+    public function index()
+    {
+        // Mengambil semua arsip dari semua user
+        $archives = Archive::latest()->paginate(10);
+
+        return view('archive.index', compact('archives'));
+    }
 
     public function create()
     {
@@ -193,11 +188,11 @@ public function index()
     }
 
     public function showFile($id)
-{
-    // Cari data file berdasarkan ID
-    $file = ArchiveFile::findOrFail($id); 
+    {
+        // Cari data file berdasarkan ID
+        $file = ArchiveFile::findOrFail($id);
 
-    // Kita load view baru khusus untuk menampilkan PDF
-    return view('archive.viewer-public', compact('file'));
-}
+        // Kita load view baru khusus untuk menampilkan PDF
+        return view('archive.viewer-public', compact('file'));
+    }
 }

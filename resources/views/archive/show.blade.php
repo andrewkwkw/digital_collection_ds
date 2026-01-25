@@ -14,45 +14,47 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            
+
             @if ($archive->files->count() > 0)
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-3xl border border-gray-100 dark:border-gray-700">
-                    <div class="p-8">
-                        <h3 class="text-sm font-black text-brand-700 dark:text-brand-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            {{ __('Lampiran File PDF') }}
-                        </h3>
-                        
-                        <div class="grid grid-cols-1 gap-3">
-                            @foreach ($archive->files as $file)
-                                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-brand-500/50 transition-all">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 flex items-center justify-center bg-red-100 dark:bg-red-900/20 rounded-xl">
-                                            <span class="text-[10px] font-black text-red-600 dark:text-red-400">PDF</span>
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[200px] md:max-w-md">
-                                                {{ $file->original_filename ?? basename($file->archive_path) }}
-                                            </span>
-                                            <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Document ID: #{{ $file->id }}</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex gap-2">
-                                        <a href="{{ route('archive.show_file', $file->id) }}"
-   class="inline-flex items-center justify-center p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-500/10 rounded-lg transition-colors"
-   title="Lihat">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-    </svg>
-</a>
-                                    </div>
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-3xl border border-gray-100 dark:border-gray-700">
+                <div class="p-8">
+                    <h3 class="text-sm font-black text-brand-700 dark:text-brand-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        {{ __('Lampiran File PDF') }}
+                    </h3>
+
+                    <div class="grid grid-cols-1 gap-3">
+                        @foreach ($archive->files as $file)
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-brand-500/50 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-red-100 dark:bg-red-900/20 rounded-xl">
+                                    <span class="text-[10px] font-black text-red-600 dark:text-red-400">PDF</span>
                                 </div>
-                            @endforeach
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[200px] md:max-w-md">
+                                        {{ $file->original_filename ?? basename($file->archive_path) }}
+                                    </span>
+                                    <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Document ID: #{{ $file->id }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="{{ route('archive.show_file', $file->id) }}"
+                                    class="inline-flex items-center justify-center p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-500/10 rounded-lg transition-colors"
+                                    title="Lihat">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
+            </div>
             @endif
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-3xl border border-gray-100 dark:border-gray-700">
@@ -131,13 +133,17 @@
 
             <div class="flex items-center justify-between px-4">
                 <a href="{{ route('archive.index') }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-brand-600 transition-colors">
-                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
                     {{ __('Kembali ke Daftar') }}
                 </a>
-                
+
                 <div class="flex gap-3">
                     <a href="{{ route('archive.edit', $archive) }}" class="inline-flex items-center px-6 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-yellow-500/20 transition-all active:scale-95">
-                        <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
                         {{ __('Edit Arsip') }}
                     </a>
 
@@ -145,7 +151,9 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-white dark:bg-gray-800 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm font-bold rounded-xl transition-all active:scale-95">
-                            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
                             {{ __('Hapus') }}
                         </button>
                     </form>
