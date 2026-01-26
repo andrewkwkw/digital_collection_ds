@@ -5,20 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Digital Collection') }}</title>
 
+    {{-- PDF.JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <style>
-            @layer theme {}
-        </style>
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         .pdf-thumb canvas {
@@ -29,171 +24,146 @@
     </style>
 </head>
 
-<body class="bg-white dark:bg-gray-900 antialiased">
-    <x-nav-guest />
+<body class="bg-white dark:bg-gray-900 antialiased font-['Instrument_Sans']">
 
-    <main class="min-h-screen">
-        <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 class="text-4xl font-bold mb-4">Digital Collection</h1>
-                <p class="text-lg mb-6 max-w-3xl text-blue-100">
-                    Platform arsip digital untuk referensi akademik dan umum. Jelajahi berbagai koleksi yang telah dikurasi dengan cermat.
+<x-nav-guest />
+
+<main class="min-h-screen">
+
+    {{-- ================= HERO ================= --}}
+    <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white pt-20 pb-28">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="max-w-4xl">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                    Digital Collection
+                </h1>
+
+                <p class="text-lg md:text-xl text-blue-100 mb-10 max-w-2xl">
+                    Platform arsip digital untuk referensi akademik dan umum.
+                    Jelajahi koleksi terkurasi berdasarkan kategori arsip.
                 </p>
-                <div class="flex gap-4">
-                    @auth
-                        <a href="{{ route('archive.index') }}" class="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-                            Kelola Arsip Saya
-                        </a>
-                    @endauth
-                    <a href="#recent" class="border-2 border-white px-6 py-2 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
-                        Lihat Koleksi
-                    </a>
-                </div>
             </div>
-        </section>
 
-        @if ($recentArchives->count() > 0)
-            <section id="recent" class="py-16 bg-gray-50 dark:bg-gray-800">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Arsip Terbaru</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                        @foreach ($recentArchives as $archive)
-                            <a href="{{ route('archive.show-guest', $archive->id) }}" class="bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition overflow-hidden group">
-                                
-                                @if ($archive->files->count() > 0)
-                                    <div class="h-48 bg-gray-200 dark:bg-gray-600 pdf-thumb flex items-center justify-center overflow-hidden"
+        </div>
+    </section>
+
+    {{-- ================= KOLEKSI ================= --}}
+    <section class="py-14 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="mb-8 border-b border-gray-200 dark:border-gray-800 pb-4">
+                <h2 class="inline-block bg-blue-900 text-white px-4 py-2 font-bold">
+                    Koleksi Arsip
+                </h2>
+            </div>
+
+            @if ($archivesByType->count())
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    @foreach ($archivesByType as $type => $archives)
+                        @php
+                            $archive = $archives->first();
+                        @endphp
+
+                        {{-- ⬇️ KLIK TIPE → JELAJAH TER-FILTER --}}
+                        <a href="{{ route('jelajah', ['filter' => $type]) }}"
+                           class="group block">
+
+                            <div class="relative aspect-[16/9] bg-gray-200 dark:bg-gray-800 overflow-hidden shadow">
+
+                                @if ($archive->files->count())
+                                    <div class="pdf-thumb w-full h-full"
                                          data-pdf="{{ asset('storage/' . $archive->files->first()->archive_path) }}">
                                         <canvas></canvas>
                                     </div>
                                 @else
-                                    <div class="h-48 bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                                        <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"></path>
-                                        </svg>
+                                    <div class="flex items-center justify-center h-full text-gray-400 text-xs">
+                                        Preview N/A
                                     </div>
                                 @endif
 
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-blue-600">{{ $archive->title }}</h3>
-                                    <p class="text-xs text-gray-500">{{ $archive->created_at->format('d M Y') }}</p>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </section>
-        @endif
-
-        <section class="py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Jelajahi Koleksi</h2>
-
-                <div class="mb-8 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md border dark:border-gray-600">
-                    <form method="GET" action="{{ route('welcome') }}" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cari Judul</label>
-                                <input type="text" name="search" value="{{ $search }}" placeholder="Masukkan judul..." 
-                                    class="w-full px-4 py-2 border rounded-lg dark:bg-gray-600 dark:text-white dark:border-gray-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter Tipe</label>
-                                <select name="filter" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-600 dark:text-white dark:border-gray-500">
-                                    <option value="">Semua Koleksi</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type }}" {{ $filter === $type ? 'selected' : '' }}>{{ $type }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="flex items-end">
-                                <button type="submit" class="w-full bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Cari</button>
-                            </div>
-                        </div>
-                        @if ($search || $filter)
-                            <a href="{{ route('welcome') }}" class="inline-block text-blue-600 dark:text-blue-400 text-sm hover:underline">← Bersihkan Filter</a>
-                        @endif
-                    </form>
-                </div>
-
-                @if ($archivesByType->count() > 0)
-                    @foreach ($archivesByType as $type => $archives)
-                        <div class="mb-12">
-                            <div class="flex items-center mb-6 border-b pb-2 dark:border-gray-700">
-                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $type ?? 'Tanpa Kategori' }}</h3>
-                                <span class="ml-3 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">{{ $archives->count() }} Item</span>
+                                <div class="absolute inset-0 bg-blue-900 opacity-0 group-hover:opacity-10 transition"></div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                @foreach ($archives as $archive)
-                                    <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden flex flex-col group">
-                                        @if ($archive->files->count() > 0)
-                                            <div class="h-56 bg-gray-200 dark:bg-gray-600 relative pdf-thumb overflow-hidden flex items-center justify-center"
-                                                 data-pdf="{{ asset('storage/' . $archive->files->first()->archive_path) }}">
-                                                <canvas></canvas>
-                                            </div>
-                                        @else
-                                            <div class="h-56 bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                                                <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4z"></path>
-                                                </svg>
-                                            </div>
-                                        @endif
-
-                                        <div class="p-5 flex-grow">
-                                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">{{ $archive->title }}</h4>
-                                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ $archive->description ?? 'Tidak ada deskripsi.' }}</p>
-                                            
-                                            <a href="{{ route('archive.show-guest', $archive->id) }}" 
-                                               class="block text-center bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">
-                                                Lihat Detail
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
+                            {{-- TYPE ONLY --}}
+                            <div class="mt-3 text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
+                                {{ $type ?? 'Uncategorized' }}
                             </div>
-                        </div>
+                        </a>
                     @endforeach
-                @else
-                    <div class="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                        <p class="text-gray-500">Tidak ada arsip ditemukan.</p>
-                    </div>
-                @endif
-            </div>
-        </section>
-    </main>
 
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                </div>
 
-        async function renderThumbnails() {
-            const thumbs = document.querySelectorAll('.pdf-thumb');
-            
-            for (const el of thumbs) {
-                const url = el.dataset.pdf;
-                const canvas = el.querySelector('canvas');
-                if (!url || !canvas) continue;
+                {{-- ⬇️ JELAJAH SEMUA --}}
+                <div class="mt-14 text-center">
+                    <a href="{{ route('jelajah') }}"
+                       class="inline-flex items-center gap-2 px-6 py-3 rounded-full
+                              bg-blue-600 text-white font-semibold
+                              hover:bg-blue-700 transition shadow">
+                        Jelajahi Semua Koleksi
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
 
-                const ctx = canvas.getContext('2d');
+            @else
+                <div class="text-center py-20 text-gray-500">
+                    Tidak ada koleksi arsip tersedia.
+                </div>
+            @endif
 
-                try {
-                    const loadingTask = pdfjsLib.getDocument(url);
-                    const pdf = await loadingTask.promise;
-                    const page = await pdf.getPage(1);
-                    
-                    const viewport = page.getViewport({ scale: 0.8 });
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
+        </div>
+    </section>
 
-                    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-                } catch (e) {
-                    console.error("Gagal memuat PDF:", e);
-                    el.innerHTML = '<div class="text-xs text-gray-400">Preview N/A</div>';
+</main>
+
+{{-- ================= PDF THUMB ================= --}}
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const thumbs = document.querySelectorAll('.pdf-thumb');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    renderPdf(entry.target);
+                    observer.unobserve(entry.target);
                 }
-            }
-        }
+            });
+        }, { rootMargin: '100px' });
 
-        // Jalankan saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', renderThumbnails);
-    </script>
+        thumbs.forEach(el => observer.observe(el));
+    });
+
+    async function renderPdf(el) {
+        const url = el.dataset.pdf;
+        const canvas = el.querySelector('canvas');
+        if (!url || !canvas) return;
+
+        try {
+            const pdf = await pdfjsLib.getDocument(url).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1 });
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({
+                canvasContext: canvas.getContext('2d'),
+                viewport
+            }).promise;
+        } catch {
+            el.innerHTML =
+                '<div class="flex items-center justify-center h-full text-xs text-gray-400">Preview gagal</div>';
+        }
+    }
+</script>
+
 </body>
 </html>

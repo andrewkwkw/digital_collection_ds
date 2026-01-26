@@ -4,9 +4,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ArchiveController::class, 'welcome'])->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
+
+Route::get('/jelajah', [ArchiveController::class, 'jelajah'])
+    ->name('jelajah');
 
 // Route untuk melihat detail arsip (guest/public) - HARUS SEBELUM resource route
 Route::get('/collections/{id}', [ArchiveController::class, 'showGuest'])->name('archive.show-guest')->where('id', '[0-9]+');

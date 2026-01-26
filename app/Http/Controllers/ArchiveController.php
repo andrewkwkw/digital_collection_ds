@@ -13,37 +13,42 @@ class ArchiveController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['welcome', 'showGuest', 'showFile']);
+        $this->middleware('auth')->except(['welcome', 'showGuest', 'showFile','jelajah']);
     }
 
-    public function welcome(Request $request)
-    {
-        $search = $request->input('search', '');
-        $filter = $request->input('filter', '');
+public function jelajah(Request $request)
+{
+    $search = $request->query('search'); // title
+    $filter = $request->query('filter'); // type
 
-        $types = Archive::select('type')
-            ->distinct()
-            ->whereNotNull('type')
-            ->pluck('type');
+    $types = Archive::select('type')
+        ->whereNotNull('type')
+        ->distinct()
+        ->orderBy('type')
+        ->pluck('type');
 
-        $recentArchives = Archive::latest()
-            ->limit(5)
-            ->get();
+    $query = Archive::with('files')->latest();
 
-        $query = Archive::query();
-
-        if ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
-        }
-
-        if ($filter) {
-            $query->where('type', $filter);
-        }
-
-        $archivesByType = $query->get()->groupBy('type');
-
-        return view('welcome', compact('recentArchives', 'archivesByType', 'types', 'search', 'filter'));
+    // SEARCH BY TITLE
+    if (!empty($search)) {
+        $query->where('title', 'LIKE', '%' . $search . '%');
     }
+
+    // FILTER BY TYPE
+    if (!empty($filter)) {
+        $query->where('type', $filter);
+    }
+
+    $archives = $query->paginate(12)->withQueryString();
+
+    return view('jelajah', compact(
+        'archives',
+        'types',
+        'search',
+        'filter'
+    ));
+}
+
 
     public function index()
     {
