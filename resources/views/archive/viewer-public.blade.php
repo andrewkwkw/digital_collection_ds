@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,10 +8,7 @@
     <title>{{ $file->original_filename ?? basename($file->archive_path) }} - {{ config('app.name', 'Laravel') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link
-        href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
-        rel="stylesheet"
-    />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,9 +16,7 @@
         <style>
             /* Tailwind CSS (auto-generated fallback) */
             /*! tailwindcss v4.0.7 | MIT License | https://tailwindcss.com */
-            @layer theme {
-
-            }
+            @layer theme {}
         </style>
     @endif
 </head>
@@ -30,13 +26,18 @@
     <nav class="bg-gray-800 border-b border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="{{ url()->previous() }}" class="text-white hover:text-gray-300 flex items-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    <span>{{ __('Kembali') }}</span>
-                </a>
-                <h1 class="text-white font-semibold truncate max-w-xs">{{ $file->original_filename ?? basename($file->archive_path) }}</h1>
+                <a href="{{ route('archive.show-guest', $file->archive_id) }}"
+   class="text-white hover:text-gray-300 flex items-center gap-2">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 19l-7-7 7-7" />
+    </svg>
+    <span>Kembali</span>
+</a>
+
+                <h1 class="text-white font-semibold truncate max-w-xs">
+                    {{ $file->original_filename ?? basename($file->archive_path) }}
+                </h1>
             </div>
         </div>
     </nav>
@@ -59,7 +60,7 @@
                     <span id="page-info" class="ml-4 text-sm text-gray-300"></span>
                 </div>
 
-                <a href="{{ asset('storage/' . $file->archive_path) }}" download="{{ $file->original_filename }}"
+                <a href="{{ route('file.download.watermark', $file->id) }}"
                     class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -73,7 +74,8 @@
     </div>
 
     <!-- PDF Viewer Container -->
-    <div id="pdf-container" class="bg-gray-900 min-h-[calc(100vh-8rem)] overflow-y-auto" style="height: calc(100vh - 8rem);">
+    <div id="pdf-container" class="bg-gray-900 min-h-[calc(100vh-8rem)] overflow-y-auto"
+        style="height: calc(100vh - 8rem);">
         <div id="pdf-pages" class="flex flex-col items-center py-6 gap-6"></div>
     </div>
 
@@ -183,4 +185,5 @@
         }
     </style>
 </body>
+
 </html>

@@ -11,13 +11,13 @@
         <div class="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             
             <div class="flex items-center justify-between mb-4">
-                <a href="{{ route('archive.show_file', $file->id) }}" class="group flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
-                    <div class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center mr-2 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
-                        &larr;
-                    </div>
-                    Kembali ke Detail
-                </a>
-
+                <a href="{{ route('archive.show', $file->archive_id) }}"
+   class="group flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
+    <div class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center mr-2 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
+        &larr;
+    </div>
+    Kembali
+</a>
                 <div class="hidden sm:block px-3 py-1 bg-gray-200 dark:bg-gray-800 rounded-full">
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">PDF Viewer</span>
                 </div>

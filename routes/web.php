@@ -29,6 +29,9 @@ Route::get('/collections/{id}/view', [ArchiveController::class, 'showFile'])
     ->name('archive.show_file')
     ->whereNumber('id');
 
+Route::get('/file/download/{id}', [ArchiveController::class, 'downloadWatermarked'])
+    ->name('file.download.watermark');
+
 
 /*
 |--------------------------------------------------------------------------
