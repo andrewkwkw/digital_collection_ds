@@ -11,7 +11,7 @@
                     {{ __('Manajemen Akses Admin') }}
                 </h2>
             </div>
-            <a href="{{ route('admin.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all duration-300 hover:-translate-y-1">
+            <a href="{{ route('admin.admin.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all duration-300 hover:-translate-y-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                 </svg>
@@ -80,7 +80,7 @@
                                     {{ $admin->email }}
                                 </td>
                                 <td class="px-8 py-5 text-center text-sm">
-                                    <form action="{{ route('admin.destroy', $admin) }}" method="POST" onsubmit="return confirm('Cabut akses admin ini? Akun akan dihapus secara permanen.')">
+                                    <form action="{{ route('admin.admin.destroy', $admin) }}" method="POST" onsubmit="return confirm('Cabut akses admin ini? Akun akan dihapus secara permanen.')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center justify-center p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Hapus Akses">

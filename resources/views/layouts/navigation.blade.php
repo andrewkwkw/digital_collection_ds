@@ -8,23 +8,30 @@
                 </div>
 
                 <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
-                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')"
-                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none">
-                        {{ __('Arsip') }}
-                    </x-nav-link>
 
-                    @if(Auth::user()->isSuperAdmin())
-                        <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.*')"
-                            class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none">
-                            {{ __('Daftar Admin') }}
-                        </x-nav-link>
-                    @endif
-                </div>
+    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+        {{ __('Dashboard') }}
+    </x-nav-link>
+
+    <x-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')">
+        {{ __('Arsip') }}
+    </x-nav-link>
+
+    @if(Auth::user()->isSuperAdmin())
+        <x-nav-link :href="route('admin.admin.index')" :active="request()->routeIs('admin.admin.*')">
+            {{ __('Daftar Admin') }}
+        </x-nav-link>
+
+        {{-- ✅ HERO SETTINGS --}}
+        <x-nav-link
+            :href="route('admin.hero.index')"
+            :active="request()->routeIs('admin.hero.*')">
+            {{ __('Hero Settings') }}
+        </x-nav-link>
+    @endif
+
+</div>
+
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-2">
@@ -88,19 +95,29 @@
          x-transition:enter-start="opacity-0 -translate-y-2"
          x-transition:enter-end="opacity-100 translate-y-0"
          class="hidden sm:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg">
-        <div class="pt-2 pb-3 space-y-1 border-t border-gray-100 dark:border-gray-800">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')">
-                {{ __('Arsip') }}
-            </x-responsive-nav-link>
-            @if(Auth::user()->isSuperAdmin())
-                <x-responsive-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.*')">
-                    {{ __('Daftar Admin') }}
-                </x-responsive-nav-link>
-            @endif
-        </div>
+        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+    {{ __('Dashboard') }}
+</x-responsive-nav-link>
+
+<x-responsive-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')">
+    {{ __('Arsip') }}
+</x-responsive-nav-link>
+
+@if(Auth::user()->isSuperAdmin())
+    <x-responsive-nav-link
+        :href="route('admin.admin.index')"
+        :active="request()->routeIs('admin.*')">
+        {{ __('Daftar Admin') }}
+    </x-responsive-nav-link>
+
+    {{-- ✅ HERO SETTINGS --}}
+    <x-responsive-nav-link
+        :href="route('admin.hero.index')"
+        :active="request()->routeIs('admin.hero.*')">
+        {{ __('Hero Settings') }}
+    </x-responsive-nav-link>
+@endif
+
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-700">
             <div class="px-4 flex items-center">
