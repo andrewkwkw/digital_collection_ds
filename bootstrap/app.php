@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'is_superadmin' => \App\Http\Middleware\IsSuperAdmin::class,
+            'public.archive' => \App\Http\Middleware\PublicArchive::class,
+            'superadmin' => \App\Http\Middleware\SuperAdminOnly::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

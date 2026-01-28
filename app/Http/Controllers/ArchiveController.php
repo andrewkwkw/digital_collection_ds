@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive;
-use Spatie\PdfToImage\Pdf;
 use setasign\Fpdi\Fpdi;
 use App\Models\ArchiveFile;
 use Illuminate\Http\Request;
@@ -12,43 +11,39 @@ use Illuminate\Support\Facades\Auth;
 
 class ArchiveController extends Controller
 {
-    public function __construct()
+
+    public function jelajah(Request $request)
     {
-        $this->middleware('auth')->except(['welcome', 'showGuest', 'showFile','jelajah']);
+        $search = $request->query('search'); // title
+        $filter = $request->query('filter'); // type
+
+        $types = Archive::select('type')
+            ->whereNotNull('type')
+            ->distinct()
+            ->orderBy('type')
+            ->pluck('type');
+
+        $query = Archive::with('files')->latest();
+
+        // SEARCH BY TITLE
+        if (!empty($search)) {
+            $query->where('title', 'LIKE', '%' . $search . '%');
+        }
+
+        // FILTER BY TYPE
+        if (!empty($filter)) {
+            $query->where('type', $filter);
+        }
+
+        $archives = $query->paginate(12)->withQueryString();
+
+        return view('jelajah', compact(
+            'archives',
+            'types',
+            'search',
+            'filter'
+        ));
     }
-
-public function jelajah(Request $request)
-{
-    $search = $request->query('search'); // title
-    $filter = $request->query('filter'); // type
-
-    $types = Archive::select('type')
-        ->whereNotNull('type')
-        ->distinct()
-        ->orderBy('type')
-        ->pluck('type');
-
-    $query = Archive::with('files')->latest();
-
-    // SEARCH BY TITLE
-    if (!empty($search)) {
-        $query->where('title', 'LIKE', '%' . $search . '%');
-    }
-
-    // FILTER BY TYPE
-    if (!empty($filter)) {
-        $query->where('type', $filter);
-    }
-
-    $archives = $query->paginate(12)->withQueryString();
-
-    return view('jelajah', compact(
-        'archives',
-        'types',
-        'search',
-        'filter'
-    ));
-}
 
 
     public function index()
@@ -114,11 +109,11 @@ public function jelajah(Request $request)
      * Show archive detail for guest/public users
      */
     public function showGuest($id)
-{
-    $archive = Archive::with('files')->findOrFail($id);
+    {
+        $archive = Archive::with('files')->findOrFail($id);
 
-    return view('archive.show-guest', compact('archive'));
-}
+        return view('archive.show-guest', compact('archive'));
+    }
 
 
     public function edit(Archive $archive)
@@ -196,95 +191,94 @@ public function jelajah(Request $request)
     }
 
     public function showFile($id)
-{
-    $file = ArchiveFile::with('archive')->findOrFail($id);
+    {
+        $file = ArchiveFile::with('archive')->findOrFail($id);
 
-    return view('archive.viewer-public', compact('file'));
-}
-
-   public function downloadWatermarked($id)
-{
-    $file = ArchiveFile::findOrFail($id);
-    $filePath = storage_path('app/public/' . $file->archive_path);
-
-    if (!file_exists($filePath)) {
-        abort(404, 'File fisik tidak ditemukan.');
+        return view('archive.viewer-public', compact('file'));
     }
 
-    // --- Anonymous class FPDI untuk rotasi ---
-    $pdf = new class extends Fpdi {
-        public $angle = 0;
+    public function downloadWatermarked($id)
+    {
+        $file = ArchiveFile::findOrFail($id);
+        $filePath = storage_path('app/public/' . $file->archive_path);
 
-        function Rotate($angle, $x = -1, $y = -1)
-        {
-            if ($x == -1) $x = $this->x;
-            if ($y == -1) $y = $this->y;
-            if ($this->angle != 0) $this->_out('Q');
-            $this->angle = $angle;
-            if ($angle != 0) {
-                $angle *= M_PI / 180;
-                $c = cos($angle);
-                $s = sin($angle);
-                $cx = $x * $this->k;
-                $cy = ($this->h - $y) * $this->k;
-                $this->_out(sprintf(
-                    'q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',
-                    $c, $s, -$s, $c, $cx, $cy, -$cx, -$cy
-                ));
+        if (!file_exists($filePath)) {
+            abort(404, 'File fisik tidak ditemukan.');
+        }
+
+        // --- Anonymous class FPDI untuk rotasi ---
+        $pdf = new class extends Fpdi {
+            public $angle = 0;
+
+            function Rotate($angle, $x = -1, $y = -1)
+            {
+                if ($x == -1) $x = $this->x;
+                if ($y == -1) $y = $this->y;
+                if ($this->angle != 0) $this->_out('Q');
+                $this->angle = $angle;
+                if ($angle != 0) {
+                    $angle *= M_PI / 180;
+                    $c = cos($angle);
+                    $s = sin($angle);
+                    $cx = $x * $this->k;
+                    $cy = ($this->h - $y) * $this->k;
+                    $this->_out(sprintf(
+                        'q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',
+                        $c,
+                        $s,
+                        -$s,
+                        $c,
+                        $cx,
+                        $cy,
+                        -$cx,
+                        -$cy
+                    ));
+                }
+            }
+
+            function _endpage()
+            {
+                if ($this->angle != 0) {
+                    $this->angle = 0;
+                    $this->_out('Q');
+                }
+                parent::_endpage();
+            }
+        };
+        // -------------------------------------
+
+        try {
+            $pageCount = $pdf->setSourceFile($filePath);
+        } catch (\Exception $e) {
+            return back()->with('error', 'File PDF corrupt atau terproteksi password.');
+        }
+
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $templateId = $pdf->importPage($pageNo);
+            $size = $pdf->getTemplateSize($templateId);
+
+            $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+            $pdf->useTemplate($templateId);
+
+            $watermarkText = "DIGITAL COLLECTION ARCHIVE";
+            $pdf->SetFont('Helvetica', 'B', 15); // font lebih kecil
+            $pdf->SetTextColor(240, 240, 240);  // abu-abu terang
+
+            $stepX = 100; // jarak horizontal antar teks
+            $stepY = 60;  // jarak vertikal antar teks
+
+            for ($x = 0; $x < $size['width']; $x += $stepX) {
+                for ($y = 0; $y < $size['height']; $y += $stepY) {
+                    $pdf->Rotate(45, $x, $y);
+                    $pdf->Text($x, $y, $watermarkText);
+                    $pdf->Rotate(0); // reset rotasi
+                }
             }
         }
 
-        function _endpage()
-        {
-            if ($this->angle != 0) {
-                $this->angle = 0;
-                $this->_out('Q');
-            }
-            parent::_endpage();
-        }
-    };
-    // -------------------------------------
-
-    try {
-        $pageCount = $pdf->setSourceFile($filePath);
-    } catch (\Exception $e) {
-        return back()->with('error', 'File PDF corrupt atau terproteksi password.');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="watermarked_' . basename($file->original_filename) . '"',
+        ]);
     }
-
-    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-        $templateId = $pdf->importPage($pageNo);
-        $size = $pdf->getTemplateSize($templateId);
-
-        $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
-        $pdf->useTemplate($templateId);
-
-        $watermarkText = "DIGITAL COLLECTION ARCHIVE";
-$pdf->SetFont('Helvetica', 'B', 15); // font lebih kecil
-$pdf->SetTextColor(240, 240, 240);  // abu-abu terang
-
-$stepX = 100; // jarak horizontal antar teks
-$stepY = 60;  // jarak vertikal antar teks
-
-for ($x = 0; $x < $size['width']; $x += $stepX) {
-    for ($y = 0; $y < $size['height']; $y += $stepY) {
-        $pdf->Rotate(45, $x, $y);
-        $pdf->Text($x, $y, $watermarkText);
-        $pdf->Rotate(0); // reset rotasi
-    }
-}
-
-        // --- FOOTER ---
-        $pdf->SetFont('Helvetica', 'I', 9);
-        $pdf->SetTextColor(100, 100, 100);
-        $pdf->SetXY(10, $size['height'] - 15);
-        $pdf->Write(0, 'Downloaded from ' . config('app.name') . ' - ' . date('d M Y H:i'));
-    }
-
-    return response($pdf->Output('S'), 200, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'attachment; filename="watermarked_' . basename($file->original_filename) . '"',
-    ]);
-}
-
-
 }

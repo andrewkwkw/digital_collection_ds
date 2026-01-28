@@ -13,24 +13,19 @@ use App\Http\Controllers\HeroSlideController;
 | PUBLIC / GUEST ROUTES
 |--------------------------------------------------------------------------
 */
+    Route::middleware('public.archive')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('welcome');
+    Route::get('/jelajah', [ArchiveController::class, 'jelajah'])->name('jelajah');
 
-Route::get('/', [HomeController::class, 'index'])->name('welcome');
+    Route::get('/collections/{id}', [ArchiveController::class, 'showGuest'])
+        ->name('archive.show-guest');
 
-Route::get('/jelajah', [ArchiveController::class, 'jelajah'])
-    ->name('jelajah');
+    Route::get('/collections/{id}/view', [ArchiveController::class, 'showFile'])
+        ->name('archive.show_file');
 
-// Detail arsip (guest)
-Route::get('/collections/{id}', [ArchiveController::class, 'showGuest'])
-    ->name('archive.show-guest')
-    ->whereNumber('id');
-
-// Preview / view file arsip (guest)
-Route::get('/collections/{id}/view', [ArchiveController::class, 'showFile'])
-    ->name('archive.show_file')
-    ->whereNumber('id');
-
-Route::get('/file/download/{id}', [ArchiveController::class, 'downloadWatermarked'])
-    ->name('file.download.watermark');
+    Route::get('/file/download/{id}', [ArchiveController::class, 'downloadWatermarked'])
+        ->name('file.download.watermark');
+});
 
 
 /*
@@ -39,7 +34,7 @@ Route::get('/file/download/{id}', [ArchiveController::class, 'downloadWatermarke
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Dashboard (semua user login)
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -72,7 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'is_superadmin'])
+Route::middleware(['auth', 'verified', 'superadmin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

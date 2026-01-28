@@ -8,28 +8,18 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (!$request->user() || !$request->user()->isSuperAdmin()) {
-                abort(403, 'Hanya superadmin yang bisa mengelola admin.');
-            }
-            return $next($request);
-        });
-    }
 
     public function index()
     {
         // Mengambil daftar user dengan role admin
         $admins = User::where('role', 'admin')->latest()->paginate(10);
         // Pastikan path view sesuai dengan struktur folder Anda, contoh: 'tambah admin.index'
-        return view('tambah admin.index', compact('admins'));
+        return view('tambah_admin.index', compact('admins'));
     }
 
     public function create()
     {
-        return view('tambah admin.create');
+        return view('tambah_admin.create');
     }
 
     public function store(Request $request)
