@@ -14,12 +14,12 @@ class AdminController extends Controller
         // Mengambil daftar user dengan role admin
         $admins = User::where('role', 'admin')->latest()->paginate(10);
         // Pastikan path view sesuai dengan struktur folder Anda, contoh: 'tambah admin.index'
-        return view('tambah_admin.index', compact('admins'));
+        return view('admin.add_admin.index', compact('admins'));
     }
 
     public function create()
     {
-        return view('tambah_admin.create');
+        return view('admin.add_admin.create');
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class AdminController extends Controller
             'role' => 'admin',
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Akun Admin berhasil didaftarkan.');
+        return redirect()->route('admin.admin.index')->with('success', 'Akun Admin berhasil didaftarkan.');
     }
 
     // Method edit dan update TELAH DIHAPUS untuk privasi data personal admin
@@ -50,6 +50,6 @@ class AdminController extends Controller
         }
 
         $admin->delete();
-        return redirect()->route('admin.index')->with('success', 'Akses Admin telah dicabut (akun dihapus).');
+        return redirect()->route('admin.admin.index')->with('success', 'Akses Admin telah dicabut (akun dihapus).');
     }
 }
