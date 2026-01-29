@@ -1,43 +1,44 @@
 <nav x-data="{ open: false }" class="sticky top-0 z-50 backdrop-blur-lg bg-white/70 dark:bg-gray-900/70 border-b border-gray-200/50 dark:border-gray-800/50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20"> <div class="flex">
+        <div class="flex justify-between h-20">
+            <div class="flex">
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="transition-transform duration-300 hover:scale-110">
+                    <a href="{{ route('admin.dashboard') }}" class="transition-transform duration-300 hover:scale-110">
                         <x-application-logo class="block h-10 w-auto fill-current text-[#5F8E5F]" />
                     </a>
                 </div>
 
                 <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
 
-    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-        {{ __('Dashboard') }}
-    </x-nav-link>
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
 
-    <x-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')">
-        {{ __('Arsip') }}
-    </x-nav-link>
+                    <x-nav-link :href="route('admin.archive.index')" :active="request()->routeIs('admin.archive.*')">
+                        {{ __('Arsip') }}
+                    </x-nav-link>
 
-    @if(Auth::user()->isSuperAdmin())
-        <x-nav-link :href="route('admin.admin.index')" :active="request()->routeIs('admin.admin.*')">
-            {{ __('Daftar Admin') }}
-        </x-nav-link>
+                    @if(Auth::user()->isSuperAdmin())
+                    <x-nav-link :href="route('admin.admin.index')" :active="request()->routeIs('admin.admin.*')">
+                        {{ __('Daftar Admin') }}
+                    </x-nav-link>
 
-        {{-- ✅ HERO SETTINGS --}}
-        <x-nav-link
-            :href="route('admin.hero.index')"
-            :active="request()->routeIs('admin.hero.*')">
-            {{ __('Hero Settings') }}
-        </x-nav-link>
-    @endif
+                    {{-- ✅ HERO SETTINGS --}}
+                    <x-nav-link
+                        :href="route('admin.hero.index')"
+                        :active="request()->routeIs('admin.hero.*')">
+                        {{ __('Hero Settings') }}
+                    </x-nav-link>
+                    @endif
 
-</div>
+                </div>
 
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-2">
                 <div class="flex items-center bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-2xl border border-gray-200/50 dark:border-gray-700/50">
                     <x-theme-toggle />
-                    
+
                     <div class="h-4 w-[1px] bg-gray-300 dark:bg-gray-600 mx-2"></div>
 
                     <x-dropdown align="right" width="48">
@@ -60,15 +61,15 @@
 
                         <x-slot name="content">
                             <div class="p-1">
-                                <x-dropdown-link :href="route('profile.edit')" class="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <x-dropdown-link :href="route('admin.profile.edit')" class="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
-                                            class="rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-                                            onclick="event.preventDefault(); this.closest('form').submit();">
+                                        class="rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                        onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
@@ -89,34 +90,34 @@
         </div>
     </div>
 
-    <div :class="{'block': open, 'hidden': ! open}" 
-         x-show="open"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0 -translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="hidden sm:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg">
-        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-    {{ __('Dashboard') }}
-</x-responsive-nav-link>
+    <div :class="{'block': open, 'hidden': ! open}"
+        x-show="open"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-2"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        class="hidden sm:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg">
+        <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+            {{ __('Dashboard') }}
+        </x-responsive-nav-link>
 
-<x-responsive-nav-link :href="route('archive.index')" :active="request()->routeIs('archive.*')">
-    {{ __('Arsip') }}
-</x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('admin.archive.index')" :active="request()->routeIs('admin.archive.*')">
+            {{ __('Arsip') }}
+        </x-responsive-nav-link>
 
-@if(Auth::user()->isSuperAdmin())
-    <x-responsive-nav-link
-        :href="route('admin.admin.index')"
-        :active="request()->routeIs('admin.*')">
-        {{ __('Daftar Admin') }}
-    </x-responsive-nav-link>
+        @if(Auth::user()->isSuperAdmin())
+        <x-responsive-nav-link
+            :href="route('admin.admin.index')"
+            :active="request()->routeIs('admin.*')">
+            {{ __('Daftar Admin') }}
+        </x-responsive-nav-link>
 
-    {{-- ✅ HERO SETTINGS --}}
-    <x-responsive-nav-link
-        :href="route('admin.hero.index')"
-        :active="request()->routeIs('admin.hero.*')">
-        {{ __('Hero Settings') }}
-    </x-responsive-nav-link>
-@endif
+        {{-- ✅ HERO SETTINGS --}}
+        <x-responsive-nav-link
+            :href="route('admin.hero.index')"
+            :active="request()->routeIs('admin.hero.*')">
+            {{ __('Hero Settings') }}
+        </x-responsive-nav-link>
+        @endif
 
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-700">
@@ -131,15 +132,15 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('admin.profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
-                            class="text-red-500"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
+                        class="text-red-500"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>

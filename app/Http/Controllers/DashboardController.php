@@ -33,7 +33,7 @@ class DashboardController extends Controller
                                    ->groupBy('type')
                                    ->pluck('total', 'type');
 
-        return view('dashboard', compact(
+        return view('admin.dashboard', compact(
             'totalArchives', 
             'totalTypes', 
             'newThisMonth', 

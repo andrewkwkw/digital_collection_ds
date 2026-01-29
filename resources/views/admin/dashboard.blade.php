@@ -22,7 +22,7 @@
                     </h3>
                     <p class="text-gray-500 dark:text-gray-400 mt-1">Sistem manajemen arsip terpantau aman dan terkendali.</p>
                 </div>
-                <a href="{{ route('archive.create') }}" class="group inline-flex items-center justify-center px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/25 transition-all duration-300 hover:-translate-y-1">
+                <a href="{{ route('admin.archive.create') }}" class="group inline-flex items-center justify-center px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/25 transition-all duration-300 hover:-translate-y-1">
                     <svg class="w-5 h-5 me-2 transform group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -78,7 +78,7 @@
                 <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div class="p-6 border-b border-gray-50 dark:border-gray-700/50 flex justify-between items-center bg-gray-50/30 dark:bg-gray-700/10">
                         <h4 class="font-bold text-lg text-gray-800 dark:text-white">Arsip Terbaru</h4>
-                        <a href="{{ route('archive.index') }}" class="text-xs font-bold bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 px-4 py-2 rounded-xl text-brand-500 hover:bg-brand-500 hover:text-white transition-all duration-300 shadow-sm">
+                        <a href="{{ route('admin.archive.index') }}" class="text-xs font-bold bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 px-4 py-2 rounded-xl text-brand-500 hover:bg-brand-500 hover:text-white transition-all duration-300 shadow-sm">
                             Lihat Semua
                         </a>
                     </div>

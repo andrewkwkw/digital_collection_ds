@@ -34,23 +34,17 @@ use App\Http\Controllers\HeroSlideController;
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 
-    // Dashboard (semua user login)
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    /*
-    |--------------------------------------------------------------------------
-    | ARCHIVE MANAGEMENT (admin & superadmin)
-    |--------------------------------------------------------------------------
-    */
-
+    // Archive management
     Route::resource('archive', ArchiveController::class)->except(['show']);
 
     Route::get('/archive/{archive}/show', [ArchiveController::class, 'show'])

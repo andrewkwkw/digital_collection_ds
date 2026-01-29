@@ -11,9 +11,10 @@
         <div class="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
 
             <div class="flex items-center justify-between mb-4">
-                <a href="{{ route('archive.show', $file->archive_id) }}"
+                <a href="{{ route('admin.archive.show', $file->archive_id) }}"
                     class="group flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
-                    <div class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center mr-2 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
+                    <div
+                        class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center mr-2 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
                         &larr;
                     </div>
                     Kembali
@@ -23,42 +24,57 @@
                 </div>
             </div>
 
-            <div id="main-viewer-wrapper" class="relative flex flex-col bg-white dark:bg-gray-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden ring-4 ring-gray-300 dark:ring-gray-700 transition-all duration-300">
+            <div id="main-viewer-wrapper"
+                class="relative flex flex-col bg-white dark:bg-gray-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden ring-4 ring-gray-300 dark:ring-gray-700 transition-all duration-300">
 
-                <div class="flex items-center justify-between px-4 py-3 bg-gray-800 text-white border-b border-gray-700 z-20">
+                <div
+                    class="flex items-center justify-between px-4 py-3 bg-gray-800 text-white border-b border-gray-700 z-20">
 
                     <div class="flex items-center gap-2">
                         <div class="flex bg-gray-700 rounded p-0.5 border border-gray-600">
-                            <button onclick="zoomOut()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-600 rounded text-gray-300 hover:text-white text-lg font-bold" title="Zoom Out">−</button>
+                            <button onclick="zoomOut()"
+                                class="w-8 h-8 flex items-center justify-center hover:bg-gray-600 rounded text-gray-300 hover:text-white text-lg font-bold"
+                                title="Zoom Out">−</button>
                             <span class="w-px bg-gray-600 my-1"></span>
-                            <button onclick="zoomIn()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-600 rounded text-gray-300 hover:text-white text-lg font-bold" title="Zoom In">+</button>
+                            <button onclick="zoomIn()"
+                                class="w-8 h-8 flex items-center justify-center hover:bg-gray-600 rounded text-gray-300 hover:text-white text-lg font-bold"
+                                title="Zoom In">+</button>
                         </div>
-                        <span id="page-count" class="ml-2 text-xs font-mono text-gray-400 bg-gray-900 px-2 py-1 rounded border border-gray-700 min-w-[80px] text-center">Loading...</span>
+                        <span id="page-count"
+                            class="ml-2 text-xs font-mono text-gray-400 bg-gray-900 px-2 py-1 rounded border border-gray-700 min-w-[80px] text-center">Loading...</span>
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <button onclick="toggleFullscreen()" class="flex items-center gap-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded text-xs font-bold uppercase tracking-wider border border-gray-600 transition-colors">
+                        <button onclick="toggleFullscreen()"
+                            class="flex items-center gap-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded text-xs font-bold uppercase tracking-wider border border-gray-600 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4">
+                                </path>
                             </svg>
                             <span id="fullscreen-text" class="hidden sm:inline">Fullscreen</span>
                         </button>
 
-                        <a href="{{ asset('storage/' . $file->archive_path) }}" download="{{ $file->original_filename }}" class="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold uppercase tracking-wider shadow-lg transition-colors">
+                        <a href="{{ asset('storage/' . $file->archive_path) }}"
+                            download="{{ $file->original_filename }}"
+                            class="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold uppercase tracking-wider shadow-lg transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                             </svg>
                             <span class="hidden sm:inline">Download</span>
                         </a>
                     </div>
                 </div>
 
-                <div id="pdf-scroll-container" class="relative overflow-y-auto bg-gray-200 dark:bg-gray-900 scroll-smooth" style="height: 75vh;">
+                <div id="pdf-scroll-container"
+                    class="relative overflow-y-auto bg-gray-200 dark:bg-gray-900 scroll-smooth" style="height: 75vh;">
                     <div id="pdf-wrapper" class="flex flex-col items-center py-8 px-4 gap-6 min-h-full">
                     </div>
                 </div>
 
-                <div id="viewer-footer" class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-between items-center text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                <div id="viewer-footer"
+                    class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-between items-center text-[10px] uppercase font-bold text-gray-400 tracking-wider">
                     <span class="truncate max-w-xs">{{ $file->original_filename }}</span>
                     <span>Secure Viewer Mode</span>
                 </div>

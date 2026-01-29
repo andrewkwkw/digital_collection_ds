@@ -51,16 +51,17 @@ class ArchiveController extends Controller
         // Mengambil semua arsip dari semua user
         $archives = Archive::latest()->paginate(10);
 
-        return view('archive.index', compact('archives'));
+        return view('admin.archive.index', compact('archives'));
     }
 
     public function create()
     {
-        return view('archive.create');
+        return view('admin.archive.create');
     }
 
     public function store(Request $request)
     {
+        \Illuminate\Support\Facades\Log::info('Archive Store Started', ['all' => $request->all(), 'files' => $request->files->all()]);
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'creator' => ['nullable', 'string', 'max:255'],
@@ -96,13 +97,14 @@ class ArchiveController extends Controller
             }
         }
 
-        return redirect()->route('archive.index')->with('success', 'Arsip berhasil diupload');
+        \Illuminate\Support\Facades\Log::info('Redirecting to Index');
+        return redirect()->route('admin.archive.index')->with('success', 'Arsip berhasil diupload');
     }
 
     public function show(Archive $archive)
     {
         $this->authorize('view', $archive);
-        return view('archive.show', compact('archive'));
+        return view('admin.archive.show', compact('archive'));
     }
 
     /**
@@ -112,14 +114,14 @@ class ArchiveController extends Controller
     {
         $archive = Archive::with('files')->findOrFail($id);
 
-        return view('archive.show-guest', compact('archive'));
+        return view('admin.archive.show-guest', compact('archive'));
     }
 
 
     public function edit(Archive $archive)
     {
         $this->authorize('update', $archive);
-        return view('archive.edit', compact('archive'));
+        return view('admin.archive.edit', compact('archive'));
     }
 
     public function update(Request $request, Archive $archive)
@@ -158,7 +160,7 @@ class ArchiveController extends Controller
             }
         }
 
-        return redirect()->route('archive.show', $archive)->with('success', 'Arsip berhasil diperbarui');
+        return redirect()->route('admin.archive.show', $archive)->with('success', 'Arsip berhasil diperbarui');
     }
 
     public function destroy(Archive $archive)
@@ -171,7 +173,7 @@ class ArchiveController extends Controller
 
         $archive->delete();
 
-        return redirect()->route('archive.index')->with('success', 'Arsip berhasil dihapus');
+        return redirect()->route('admin.archive.index')->with('success', 'Arsip berhasil dihapus');
     }
 
     public function deleteFile(ArchiveFile $archiveFile)
@@ -194,7 +196,7 @@ class ArchiveController extends Controller
     {
         $file = ArchiveFile::with('archive')->findOrFail($id);
 
-        return view('archive.viewer-public', compact('file'));
+        return view('admin.archive.viewer-public', compact('file'));
     }
 
     public function downloadWatermarked($id)
@@ -212,9 +214,12 @@ class ArchiveController extends Controller
 
             function Rotate($angle, $x = -1, $y = -1)
             {
-                if ($x == -1) $x = $this->x;
-                if ($y == -1) $y = $this->y;
-                if ($this->angle != 0) $this->_out('Q');
+                if ($x == -1)
+                    $x = $this->x;
+                if ($y == -1)
+                    $y = $this->y;
+                if ($this->angle != 0)
+                    $this->_out('Q');
                 $this->angle = $angle;
                 if ($angle != 0) {
                     $angle *= M_PI / 180;
