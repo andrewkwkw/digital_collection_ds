@@ -5,10 +5,7 @@
             {{-- LEFT --}}
             <div class="flex items-center gap-6">
                 <a href="{{ route('welcome') }}" class="flex items-center gap-3">
-                    <img
-                        src="{{ asset('storage/assets/Unpak.png') }}"
-                        alt="Logo Unpak"
-                        class="h-9 w-auto" />
+                    <img src="{{ asset('storage/assets/Unpak.png') }}" alt="Logo Unpak" class="h-9 w-auto" />
                     <span class="text-lg font-bold text-blue-600 dark:text-blue-400">
                         Digital Collection
                     </span>
@@ -29,25 +26,19 @@
 
 
             {{-- SEARCH --}}
-            <form method="GET"
-                action="{{ route('jelajah') }}"
+            <form method="GET" action="{{ route('jelajah') }}"
                 class="hidden lg:flex items-center gap-2 flex-1 max-w-xl">
 
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Cari judul arsip..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul arsip..."
                     class="w-full rounded-md px-3 py-2 text-sm">
 
                 <select name="filter" class="rounded-md px-10 py-2 text-sm">
                     <option value="">Semua Tipe</option>
 
                     @foreach ($types as $type)
-                    <option value="{{ $type }}"
-                        {{ request('filter') === $type ? 'selected' : '' }}>
-                        {{ $type }}
-                    </option>
+                        <option value="{{ $type }}" {{ request('filter') === $type ? 'selected' : '' }}>
+                            {{ $type }}
+                        </option>
                     @endforeach
                 </select>
 
@@ -60,9 +51,12 @@
             <div class="flex items-center gap-4">
                 <x-theme-toggle />
                 @auth
-                <a href="{{ url('/dashboard') }}">Dashboard</a>
+                    <a href="{{ url('/dashboard') }}">Dashboard</a>
                 @else
-                <a href="{{ route('login') }}">Login</a>
+                    <a href="{{ route('login') }}"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition">
+                        Login
+                    </a>
                 @endauth
             </div>
 

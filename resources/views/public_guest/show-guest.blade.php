@@ -23,9 +23,18 @@
             }
         </style>
     @endif
+
+    <!-- Dark Mode Initialization -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 
-<body class="bg-white dark:bg-gray-900">
+<body class="bg-white dark:bg-gray-900 antialiased font-['Instrument_Sans']">
     <!-- Navigation -->
     <x-nav-guest />
 
