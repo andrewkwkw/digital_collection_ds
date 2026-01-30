@@ -7,13 +7,14 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HeroSlideController;
+use App\Http\Controllers\TeamMemberController;
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC / GUEST ROUTES
 |--------------------------------------------------------------------------
 */
-    Route::middleware('public.archive')->group(function () {
+Route::middleware('public.archive')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('welcome');
     Route::get('/jelajah', [ArchiveController::class, 'jelajah'])->name('jelajah');
 
@@ -25,6 +26,12 @@ use App\Http\Controllers\HeroSlideController;
 
     Route::get('/file/download/{id}', [ArchiveController::class, 'downloadWatermarked'])
         ->name('file.download.watermark');
+
+    Route::view('/tentang-kami', 'public_guest.about')->name('about');
+
+    // TEAM ROUTES
+    Route::get('/tim-kami', [TeamMemberController::class, 'index'])->name('team');
+    Route::get('/tim-kami/{id}', [TeamMemberController::class, 'show'])->name('team.show');
 });
 
 
@@ -85,6 +92,14 @@ Route::middleware(['auth', 'verified', 'superadmin'])
 
         Route::delete('/hero/{id}', [HeroSlideController::class, 'destroy'])
             ->name('hero.destroy');
+
+        // TEAM MANAGEMENT
+        Route::get('/team', [TeamMemberController::class, 'manage'])->name('team.index');
+        Route::get('/team/create', [TeamMemberController::class, 'create'])->name('team.create');
+        Route::post('/team', [TeamMemberController::class, 'store'])->name('team.store');
+        Route::get('/team/{teamMember}/edit', [TeamMemberController::class, 'edit'])->name('team.edit');
+        Route::put('/team/{teamMember}', [TeamMemberController::class, 'update'])->name('team.update');
+        Route::delete('/team/{teamMember}', [TeamMemberController::class, 'destroy'])->name('team.destroy');
     });
 
 

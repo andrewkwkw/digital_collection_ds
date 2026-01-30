@@ -76,7 +76,7 @@ class ArchiveController extends Controller
             'reach' => ['nullable', 'string', 'max:255'],
             'rights' => ['nullable', 'string', 'max:255'],
             'documents' => ['required', 'array', 'min:1'],
-            'documents.*' => ['required', 'mimes:pdf', 'max:102400'],
+            'documents.*' => ['required', 'mimes:pdf', 'max:51200'],
         ]);
 
         $archive = Archive::create([
@@ -142,7 +142,7 @@ class ArchiveController extends Controller
             'reach' => ['nullable', 'string', 'max:255'],
             'rights' => ['nullable', 'string', 'max:255'],
             'documents' => ['nullable', 'array'],
-            'documents.*' => ['nullable', 'mimes:pdf', 'max:102400'],
+            'documents.*' => ['nullable', 'mimes:pdf', 'max:51200'],
         ]);
 
         $archive->update($validated);
@@ -150,7 +150,7 @@ class ArchiveController extends Controller
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $index => $document) {
                 $originalName = $document->getClientOriginalName();
-                $path = $document->storeAs('archives/documents', $originalName, 'public');
+                $path = $document->store('archives/documents', 'public');
                 $archive->files()->create([
                     'archive_path' => $path,
                     'original_filename' => $originalName,

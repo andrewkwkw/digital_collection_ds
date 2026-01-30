@@ -25,17 +25,28 @@
     <!-- Navigation -->
     <nav class="bg-gray-800 border-b border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <a href="{{ route('archive.show-guest', $file->archive_id) }}"
-   class="text-white hover:text-gray-300 flex items-center gap-2">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 19l-7-7 7-7" />
-    </svg>
-    <span>Kembali</span>
-</a>
+            <div class="flex flex-col justify-center py-3 gap-1">
+                <div class="flex items-center">
+                    @if (request('from') === 'admin' && auth()->check())
+                        <a href="{{ route('admin.archive.show', $file->archive_id) }}"
+                            class="text-white hover:text-gray-300 flex items-center gap-2 text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <span>Kembali ke Admin</span>
+                        </a>
+                    @else
+                        <a href="{{ route('archive.show-guest', $file->archive_id) }}"
+                            class="text-white hover:text-gray-300 flex items-center gap-2 text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <span>Kembali</span>
+                        </a>
+                    @endif
+                </div>
 
-                <h1 class="text-white font-semibold truncate max-w-xs">
+                <h1 class="text-white font-semibold truncate w-full text-lg pl-7">
                     {{ $file->original_filename ?? basename($file->archive_path) }}
                 </h1>
             </div>

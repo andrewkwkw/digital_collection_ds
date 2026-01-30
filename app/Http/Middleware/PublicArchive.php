@@ -15,6 +15,9 @@ class PublicArchive
             'archive.show_file',
             'jelajah',
             'file.download.watermark',
+            'about',
+            'team',
+            'team.show',
         ];
 
         if (!Auth::check() && !in_array($request->route()->getName(), $publicRoutes)) {

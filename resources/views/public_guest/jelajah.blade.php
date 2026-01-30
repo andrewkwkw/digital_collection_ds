@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Jelajahi Koleksi | {{ config('app.name') }}</title>
+    <title>{{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
@@ -66,7 +66,7 @@
                         <a href="{{ route('archive.show-guest', $archive->id) }}" class="group block">
 
                             <div class="relative aspect-[16/9] overflow-hidden
-                                                                    bg-gray-200 dark:bg-gray-800 shadow-sm">
+                                                                                    bg-gray-200 dark:bg-gray-800 shadow-sm">
 
                                 @if ($archive->files->count())
                                     <div class="pdf-thumb w-full h-full"
@@ -80,7 +80,8 @@
                                 @endif
 
                                 <div class="absolute inset-0 bg-blue-900 opacity-0
-                                                                        group-hover:opacity-10 transition"></div>
+                                                                                        group-hover:opacity-10 transition">
+                                </div>
                             </div>
 
                             {{-- TITLE + TYPE --}}
@@ -96,7 +97,7 @@
 
                                 {{-- TYPE --}}
                                 <div class="text-xs uppercase tracking-widest font-semibold
-                                                text-gray-500 dark:text-gray-400">
+                                                                text-gray-500 dark:text-gray-400">
                                     <span class="font-normal normal-case tracking-normal">
                                         Tipe:
                                     </span>
@@ -122,6 +123,8 @@
 
         </div>
     </main>
+
+    <x-footer />
 
     {{-- PDF.JS --}}
     <script>

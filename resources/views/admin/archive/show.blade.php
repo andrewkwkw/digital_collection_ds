@@ -52,7 +52,7 @@
                                     </div>
 
                                     <div class="flex gap-2">
-                                        <a href="{{ route('archive.show_file', $file->id) }}"
+                                        <a href="{{ route('archive.show_file', ['id' => $file->id, 'from' => 'admin']) }}"
                                             class="inline-flex items-center justify-center p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-500/10 rounded-lg transition-colors"
                                             title="Lihat">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

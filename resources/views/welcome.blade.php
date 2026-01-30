@@ -9,7 +9,6 @@
 
     {{-- PDF.JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
@@ -42,55 +41,56 @@
         {{-- ================= HERO CAROUSEL ================= --}}
         @if ($heroSlides->count())
 
-                    <section x-data="{
-                active: 0,
-                slides: @js(
-                    $heroSlides->map(fn($slide) => [
-                        'image' => asset('storage/' . $slide->image),
-                        'title' => $slide->title,
-                        'desc' => $slide->description,
-                    ])
-                ),
-                init() {
-                    if (this.slides.length > 1) {
-                        setInterval(() => {
-                            this.active = (this.active + 1) % this.slides.length
-                        }, 4000)
-                    }
-                }
-            }" class="relative h-[420px] overflow-hidden" @mouseenter="paused = true" @mouseleave="paused = false">
+            <section x-data="{
+                                active: 0,
+                                slides: @js(
+                                    $heroSlides->map(fn($slide) => [
+                                        'image' => asset('storage/' . $slide->image),
+                                        'title' => $slide->title,
+                                        'desc' => $slide->description,
+                                    ])
+                                ),
+                                init() {
+                                    if (this.slides.length > 1) {
+                                        setInterval(() => {
+                                            this.active = (this.active + 1) % this.slides.length
+                                        }, 4000)
+                                    }
+                                }
+                            }" class="relative h-[420px] overflow-hidden" @mouseenter="paused = true"
+                @mouseleave="paused = false">
 
-                        {{-- SLIDES --}}
-                        <template x-for="(slide, index) in slides" :key="index">
-                            <div x-show="active === index" x-transition:enter="transition-opacity duration-700"
-                                x-transition:leave="transition-opacity duration-700" class="absolute inset-0">
-                                {{-- BACKGROUND IMAGE --}}
-                                <div class="absolute inset-0 bg-cover bg-center" :style="`background-image: url(${slide.image})`">
-                                </div>
-
-                                {{-- OVERLAY --}}
-                                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-700/70"></div>
-
-                                {{-- CONTENT --}}
-                                <div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
-                                    <div class="max-w-3xl text-white">
-                                        <h1 class="text-4xl md:text-5xl font-bold mb-4" x-text="slide.title"></h1>
-
-                                        <p class="text-lg md:text-xl text-blue-100" x-text="slide.desc"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- INDICATORS --}}
-                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" x-show="slides.length > 1">
-                            <template x-for="(slide, index) in slides" :key="index">
-                                <button @click="active = index" class="w-3 h-3 rounded-full transition-all duration-300"
-                                    :class="active === index ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/70'"></button>
-                            </template>
+                {{-- SLIDES --}}
+                <template x-for="(slide, index) in slides" :key="index">
+                    <div x-show="active === index" x-transition:enter="transition-opacity duration-700"
+                        x-transition:leave="transition-opacity duration-700" class="absolute inset-0">
+                        {{-- BACKGROUND IMAGE --}}
+                        <div class="absolute inset-0 bg-cover bg-center" :style="`background-image: url(${slide.image})`">
                         </div>
 
-                    </section>
+                        {{-- OVERLAY --}}
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-700/70"></div>
+
+                        {{-- CONTENT --}}
+                        <div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
+                            <div class="max-w-3xl text-white">
+                                <h1 class="text-4xl md:text-5xl font-bold mb-4" x-text="slide.title"></h1>
+
+                                <p class="text-lg md:text-xl text-blue-100" x-text="slide.desc"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                {{-- INDICATORS --}}
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" x-show="slides.length > 1">
+                    <template x-for="(slide, index) in slides" :key="index">
+                        <button @click="active = index" class="w-3 h-3 rounded-full transition-all duration-300"
+                            :class="active === index ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/70'"></button>
+                    </template>
+                </div>
+
+            </section>
 
         @else
 
@@ -163,8 +163,8 @@
                     {{-- ⬇️ JELAJAH SEMUA --}}
                     <div class="mt-14 text-center">
                         <a href="{{ route('jelajah') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full
-                                  bg-blue-600 text-white font-semibold
-                                  hover:bg-blue-700 transition shadow">
+                                                  bg-blue-600 text-white font-semibold
+                                                  hover:bg-blue-700 transition shadow">
                             Jelajahi Semua Koleksi
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -182,6 +182,8 @@
         </section>
 
     </main>
+
+    <x-footer />
 
     {{-- ================= PDF THUMB ================= --}}
     <script>
