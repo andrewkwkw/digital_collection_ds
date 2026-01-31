@@ -24,7 +24,7 @@
                             masuk sistem.</p>
                     </div>
 
-                    <form method="POST" action="{{ route('admin.store') }}" class="space-y-6">
+                    <form method="POST" action="{{ route('admin.admin.store') }}" class="space-y-6">
                         @csrf
 
                         <div>

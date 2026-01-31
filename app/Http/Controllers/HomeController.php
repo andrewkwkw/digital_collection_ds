@@ -37,7 +37,7 @@ class HomeController extends Controller
             ->get();
 
         // GROUP BY TYPE
-        $archivesByType = $archives->groupBy('type');
+        $archivesByType = $archives->groupBy('type')->take(6);
 
         // ⬇️ KIRIM SEMUANYA
         return view('welcome', compact(
