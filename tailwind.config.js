@@ -28,6 +28,7 @@ export default {
                     800: '#324a32', // Background Dark Mode Card
                     900: '#283a28', // Navbar / Hero Section / Footer
                     950: '#151f15', // Background Dark Mode Body (Sangat Gelap)
+                    25: '#081218',
                 }
             }, 
         }, 

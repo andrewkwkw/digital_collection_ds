@@ -25,7 +25,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-950 antialiased font-['Instrument_Sans'] text-gray-800 dark:text-gray-200 flex flex-col min-h-screen selection:bg-brand-200 selection:text-brand-900">
+<body class="bg-gray-50 dark:bg-brand-25 antialiased font-['Instrument_Sans'] text-gray-800 dark:text-gray-200 flex flex-col min-h-screen selection:bg-brand-200 selection:text-brand-900">
 
     <x-nav-guest />
 
@@ -61,7 +61,7 @@
         <div class="relative -mt-20 z-20 max-w-7xl mx-auto px-6 lg:px-8 pb-24">
             
             {{-- Card Putih Besar (Container Utama) --}}
-            <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800">
+            <div class="bg-white dark:bg-brand-25 rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-gray-200/50 dark:shadow-none border border-brand-400 dark:border-brand-600">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     
@@ -129,7 +129,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
                 {{-- Stat 1 --}}
-                <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300">
+                <div class="group p-8 rounded-3xl bg-white dark:bg-brand-25 border border-gray-100 dark:border-gray-800 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300">
                     <div class="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-700 to-brand-500 mb-4 font-serif">
                         01
                     </div>
@@ -151,7 +151,7 @@
                 </div>
 
                 {{-- Stat 3 --}}
-                <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300">
+                <div class="group p-8 rounded-3xl bg-white dark:bg-brand-25 border border-gray-100 dark:border-gray-800 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-900/5 transition-all duration-300">
                     <div class="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-700 to-brand-500 mb-4 font-serif">
                         03
                     </div>

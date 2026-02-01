@@ -106,7 +106,7 @@
         </div>
     </div>
 
-    <div id="pdf-container" class="flex-1 relative overflow-auto bg-brand-950 p-4 sm:p-8 flex justify-center items-start">
+    <div id="pdf-container" class="flex-1 relative overflow-auto bg-brand-25 p-4 sm:p-8 flex justify-center items-start">
         
         <div id="pdf-pages" class="flex flex-col gap-6 transition-transform duration-200 ease-out origin-top pb-20">
             {{-- Loading State (Akan hilang setelah JS jalan) --}}

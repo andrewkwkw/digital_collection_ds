@@ -28,7 +28,7 @@
 </head>
 
 <body
-    class="bg-gray-50 dark:bg-gray-950 antialiased font-['Instrument_Sans'] text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
+    class="bg-gray-50 dark:bg-brand-25 antialiased font-['Instrument_Sans'] text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
 
     <x-nav-guest />
 

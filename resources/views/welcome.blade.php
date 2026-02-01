@@ -31,7 +31,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 antialiased font-['Instrument_Sans'] text-gray-800 dark:text-gray-200">
+<body class="bg-gray-50 dark:bg-brand-25 antialiased font-['Instrument_Sans'] text-gray-800 dark:text-gray-200">
 
     <x-nav-guest />
 
@@ -133,78 +133,63 @@
 
 
         {{-- ================= KOLEKSI ================= --}}
-        <section class="py-20 bg-gray-50 dark:bg-gray-900 relative">
+        <section class="py-20 bg-gray-50 dark:bg-brand-25 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {{-- Header --}}
                 <div class="mb-12">
                     <h3 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        Jelajahi Koleksi Kami
+                        Koleksi Kami
                     </h3>
-                    <div class="w-full h-1 bg-brand-600 dark:bg-brand-400 rounded-full"></div>
+                    <p class="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl">
+        Temukan berbagai jenis dokumen dalam satu wadah terintegrasi. Dari referensi akademik hingga materi publik yang tersimpan rapi.
+                    <div class="w-full h-0.5 bg-brand-600 dark:bg-brand-400 rounded-full"></div>
                 </div>
 
                 @if ($archivesByType->count())
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
                         @foreach ($archivesByType as $type => $archives)
                             @php
                                 $archive = $archives->first();
                             @endphp
 
-                            {{-- ⬇️ CARD ITEM: Ukuran Asli (16:9 + Teks Bawah) tapi Modern --}}
-                            <a href="{{ route('jelajah', ['filter' => $type]) }}" class="group block cursor-pointer">
-
-                                {{-- Image Wrapper (Rasio 16:9 dipertahankan) --}}
-                                <div
-                                    class="relative aspect-[16/9] bg-white dark:bg-gray-800 overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 group-hover:shadow-xl group-hover:shadow-brand-500/20 group-hover:border-brand-200 transition-all duration-300 transform group-hover:-translate-y-1">
-
+                           {{-- ⬇️ CARD ITEM --}}
+                            <a href="{{ route('jelajah', ['filter' => $type]) }}" 
+                               class="group relative bg-brand-100 dark:bg-brand-900 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-brand-900/10 border border-brand-200 dark:border-brand-800 overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
+                                {{-- Image / Preview Area --}}
+                                <div class="relative aspect-[16/9] w-full bg-brand-50 dark:bg-gray-900/50 overflow-hidden border-b border-gray-100 dark:border-gray-700">
                                     @if ($archive->files->count())
-                                        {{-- PDF Canvas --}}
-                                        <div class="pdf-thumb w-full h-full group-hover:scale-105 transition-transform duration-500"
+                                        <div class="pdf-thumb w-full h-full opacity-90 group-hover:opacity-100 transition-opacity duration-300 scale-100 group-hover:scale-105 transition-transform"
                                             data-pdf="{{ asset('storage/' . $archive->files->first()->archive_path) }}">
                                             <canvas></canvas>
                                         </div>
                                     @else
-                                        {{-- Fallback --}}
-                                        <div
-                                            class="flex flex-col items-center justify-center h-full text-gray-400 gap-2 bg-gray-50 dark:bg-gray-800">
-                                            <svg class="w-8 h-8 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                                </path>
-                                            </svg>
-                                            <span class="text-[10px] font-medium uppercase tracking-wider">Preview N/A</span>
+                                        <div class="flex flex-col items-center justify-center h-full text-gray-400 gap-2">
+                                            <svg class="w-10 h-10 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                            <span class="text-xs font-medium">Preview Tidak Tersedia</span>
                                         </div>
                                     @endif
 
-                                    {{-- Overlay Sage Green Halus --}}
-                                    <div
-                                        class="absolute inset-0 bg-brand-900 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                                    </div>
-
-                                    {{-- Tombol "Lihat" muncul saat hover di tengah --}}
-                                    <div
-                                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-90 group-hover:scale-100">
-                                        <span
-                                            class="bg-white/90 dark:bg-white/90 backdrop-blur text-brand-700 dark:text-brand-300 px-4 py-2 rounded-full text-xs font-bold shadow-lg">
-                                            Buka Koleksi
-                                        </span>
-                                    </div>
+                                    {{-- Hover Overlay --}}
+                                    <div class="absolute inset-0 bg-gradient-to-t from-brand-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6"></div>
                                 </div>
 
-                                {{-- Text Area (Di Bawah, seperti asli, tapi di-style) --}}
-                                <div class="mt-4 text-center">
-                                    <h4
-                                        class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                                        {{ $type ?? 'Uncategorized' }}
-                                        {{-- Panah kecil muncul saat hover --}}
-                                        <svg class="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18a1 1 0 0 0 0-1.69L9.54 5.98A.998.998 0 0 0 8 6.82" />
+                                {{-- Card Content --}}
+                                <div class="p-6 flex-1 flex flex-col items-center justify-center text-center">
+                                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-50 dark:bg-brand-25 text-brand-600 dark:text-brand-400 mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
+                                    </div>
+                                    
+                                    <h4 class="text-lg font-bold text-gray-800 dark:text-gray-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                                        {{ $type ?? 'Uncategorized' }}
                                     </h4>
+                                    
+                                    <span class="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+                                        Lihat semua koleksi
+                                    </span>
                                 </div>
                             </a>
                         @endforeach

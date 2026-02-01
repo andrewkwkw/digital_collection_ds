@@ -44,7 +44,7 @@
                 </a>
             </div>
 
-            <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none overflow-hidden min-h-[600px] ring-1 ring-gray-100 dark:ring-gray-800">
+            <div class="bg-white dark:bg-brand-25 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none overflow-hidden min-h-[600px] ring-1 ring-gray-100 dark:ring-gray-800">
                 <div class="flex flex-col lg:flex-row h-full">
                     
                     {{-- ================= LEFT: Photo Section ================= --}}

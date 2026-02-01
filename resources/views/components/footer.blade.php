@@ -1,4 +1,4 @@
-<footer class="relative bg-brand-50 dark:bg-gray-900 mt-auto">
+<footer class="relative bg-brand-50 dark:bg-brand-25 mt-auto">
     {{-- Decorative Top Line --}}
     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-200 via-brand-500 to-brand-200 opacity-50"></div>
 

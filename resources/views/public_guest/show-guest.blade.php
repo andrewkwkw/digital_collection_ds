@@ -53,7 +53,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 antialiased font-['Instrument_Sans'] text-gray-900 dark:text-gray-100 flex flex-col min-h-screen relative">
+<body class="bg-gray-50 dark:bg-brand-25 antialiased font-['Instrument_Sans'] text-gray-900 dark:text-gray-100 flex flex-col min-h-screen relative">
 
     <x-nav-guest />
 
@@ -71,7 +71,7 @@
             </div>
 
             {{-- Menggunakan border-brand-200 sesuai config --}}
-            <div class="bg-white dark:bg-brand-900 rounded-[2rem] shadow-xl overflow-hidden border border-brand-200 dark:border-brand-800">
+            <div class="bg-white dark:bg-brand-25 rounded-[2rem] shadow-xl overflow-hidden border border-brand-200 dark:border-brand-800">
                 
                 {{-- Decorative Top Border (Gradient menggunakan brand-500 ke brand-300) --}}
                 <div class="h-2 w-full bg-gradient-to-r from-brand-500 via-brand-300 to-brand-500"></div>
@@ -151,7 +151,7 @@
                         </div>
 
                         <div class="space-y-8">
-                            <div class="bg-white dark:bg-brand-900 rounded-2xl border border-brand-200 dark:border-brand-700 p-1">
+                            <div class="bg-white dark:bg-brand-25 rounded-2xl border border-brand-200 dark:border-brand-700 p-1">
                                 <div class="bg-brand-50/50 dark:bg-brand-950/30 rounded-xl p-6 sm:p-8">
                                     <h3 class="flex items-center gap-2 text-lg font-bold text-brand-800 dark:text-brand-100 mb-6">
                                         <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>

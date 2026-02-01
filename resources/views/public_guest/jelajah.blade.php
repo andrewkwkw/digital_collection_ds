@@ -45,7 +45,7 @@
     </script>
 </head>
 
-<body class="bg-brand-50/50 dark:bg-brand-950 antialiased font-['Instrument_Sans'] flex flex-col min-h-screen">
+<body class="bg-brand-50/50 dark:bg-brand-25 antialiased font-['Instrument_Sans'] flex flex-col min-h-screen">
 
     <x-nav-guest />
 
@@ -53,27 +53,28 @@
         <div class="max-w-7xl mx-auto">
 
             {{-- HEADER SECTION --}}
-            <div class="mb-10 text-center sm:text-left border-b border-brand-200 dark:border-brand-800 pb-8">
-                <h1 class="text-3xl sm:text-4xl font-bold font-['Playfair_Display'] text-brand-900 dark:text-brand-50 mb-3">
-                    Jelajahi Koleksi
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
-                    Telusuri arsip digital kami. Temukan dokumen, surat keputusan, dan materi publik lainnya.
-                </p>
+<div class="mb-10 text-center sm:text-left">
+    <h1 class="text-3xl md:text-4xl font-bold text-brand-25 dark:text-brand-50 mb-3">
+        Jelajahi Koleksi
+    </h1>
+    <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
+        Jelajahi arsip digital kami. Gunakan fitur filter dan pencarian untuk menemukan referensi akademik yang Anda butuhkan dengan cepat.
+    </p>
 
-                {{-- Search Result Indicator --}}
-                @if($search || $filter)
-                    <div class="mt-6 inline-flex items-center px-4 py-2 rounded-lg bg-brand-100 dark:bg-brand-900/50 border border-brand-200 dark:border-brand-700 text-brand-800 dark:text-brand-200 text-sm">
-                        <svg class="w-4 h-4 mr-2 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <span>
-                            Menampilkan hasil
-                            @if($search) untuk "<strong>{{ $search }}</strong>" @endif
-                            @if($filter) pada kategori "<strong>{{ $filter }}</strong>" @endif
-                        </span>
-                        <a href="{{ route('jelajah') }}" class="ml-3 text-brand-600 hover:text-brand-800 dark:hover:text-brand-400 font-semibold underline">Reset</a>
-                    </div>
-                @endif
-            </div>
+    {{-- Search Result Indicator --}}
+    @if($search || $filter)
+        <div class="mt-6 inline-flex items-center px-4 py-2 rounded-lg bg-brand-100 dark:bg-brand-900/50 border border-brand-200 dark:border-brand-700 text-brand-800 dark:text-brand-200 text-sm">
+            <svg class="w-4 h-4 mr-2 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span>
+                Menampilkan hasil
+                @if($search) untuk "<strong>{{ $search }}</strong>" @endif
+                @if($filter) pada kategori "<strong>{{ $filter }}</strong>" @endif
+            </span>
+            <a href="{{ route('jelajah') }}" class="ml-3 text-brand-600 hover:text-brand-800 dark:hover:text-brand-400 font-semibold underline">Reset</a>
+        </div>
+    @endif
+    <div class="w-full h-0.5 bg-brand-600 dark:bg-brand-400 rounded-full mt-8"></div>
+</div>
 
             {{-- CONTENT GRID --}}
             @if ($archives->count())
@@ -81,10 +82,10 @@
 
                     @foreach ($archives as $archive)
                         <a href="{{ route('archive.show-guest', $archive->id) }}" 
-                           class="group relative bg-white dark:bg-brand-900 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-brand-900/10 border border-brand-200 dark:border-brand-800 overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
+                           class="group relative bg-brand-100 dark:bg-brand-900 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-brand-900/10 border border-brand-200 dark:border-brand-800 overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
                             
                             {{-- THUMBNAIL AREA --}}
-                            <div class="aspect-[3/4] w-full bg-brand-50 dark:bg-brand-950 relative border-b border-brand-100 dark:border-brand-800 overflow-hidden">
+                            <div class="aspect-[16/9] w-full bg-brand-50 dark:bg-brand-950 relative border-b border-brand-100 dark:border-brand-800 overflow-hidden">
                                 
                                 @if ($archive->files->count())
                                     <div class="pdf-thumb w-full h-full relative" data-pdf="{{ asset('storage/' . $archive->files->first()->archive_path) }}">

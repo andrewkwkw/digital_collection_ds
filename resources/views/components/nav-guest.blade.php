@@ -1,5 +1,5 @@
 <nav x-data="{ mobileMenuOpen: false }" 
-     class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-brand-100 dark:border-gray-800 transition-colors duration-300">
+     class="sticky top-0 z-50 bg-white/90 dark:bg-brand-25/90 backdrop-blur-md border-b border-brand-100 dark:border-gray-800 transition-colors duration-300">
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20 gap-4 lg:gap-8">
@@ -21,23 +21,35 @@
 
                 {{-- DESKTOP NAVIGATION (Hidden on Mobile) --}}
                 <div class="hidden lg:flex items-center gap-1 text-sm font-medium text-gray-600 dark:text-gray-300">
+                    
+                    {{-- 1. BERANDA --}}
                     <a href="{{ route('welcome') }}" 
-                       class="px-4 py-2 rounded-full transition-all duration-200 hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200">
+                       class="px-4 py-2 rounded-full transition-all duration-200 {{ request()->routeIs('welcome') ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200' }}">
                         Beranda
                     </a>
+
+                    {{-- 2. JELAJAHI --}}
+                    {{-- Menggunakan 'jelajah*' agar tetap aktif saat membuka detail arsip --}}
                     <a href="{{ route('jelajah') }}" 
-                       class="px-4 py-2 rounded-full transition-all duration-200 hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200">
+                       class="px-4 py-2 rounded-full transition-all duration-200 {{ request()->routeIs('jelajah*') ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200' }}">
                         Jelajahi
                     </a>
                     
-                    {{-- Dropdown Tentang Kami (Desktop) --}}
+                    {{-- 3. DROPDOWN TENTANG KAMI --}}
+                    {{-- Cek apakah salah satu child (about/team) aktif untuk highlight parent --}}
+                    @php
+                        $isAboutActive = request()->routeIs('about') || request()->routeIs('team');
+                    @endphp
                     <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                        <button @click="open = ! open" class="inline-flex items-center gap-1 px-4 py-2 rounded-full transition-all duration-200 hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200">
+                        <button @click="open = ! open" 
+                                class="inline-flex items-center gap-1 px-4 py-2 rounded-full transition-all duration-200 {{ $isAboutActive ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-gray-800 dark:hover:text-brand-200' }}">
                             <span>Tentang Kami</span>
                             <svg class="h-4 w-4 transition-transform duration-200" :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
+                        
+                        {{-- Dropdown Menu --}}
                         <div x-show="open" 
                              x-transition:enter="transition ease-out duration-200"
                              x-transition:enter-start="transform opacity-0 scale-95 -translate-y-2"
@@ -47,8 +59,8 @@
                              x-transition:leave-end="transform opacity-0 scale-95 -translate-y-2"
                              class="absolute left-0 z-50 mt-2 w-48 rounded-xl shadow-xl shadow-brand-500/10 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 overflow-hidden" style="display: none;">
                             <div class="py-1">
-                                <a href="{{ route('about') }}" class="block px-4 py-2.5 text-sm hover:bg-brand-50 dark:hover:bg-gray-700">Profil</a>
-                                <a href="{{ route('team') }}" class="block px-4 py-2.5 text-sm hover:bg-brand-50 dark:hover:bg-gray-700">Tim Kami</a>
+                                <a href="{{ route('about') }}" class="block px-4 py-2.5 text-sm {{ request()->routeIs('about') ? 'bg-brand-50 text-brand-700 font-medium dark:bg-gray-700 dark:text-white' : 'hover:bg-brand-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300' }}">Profil</a>
+                                <a href="{{ route('team') }}" class="block px-4 py-2.5 text-sm {{ request()->routeIs('team') ? 'bg-brand-50 text-brand-700 font-medium dark:bg-gray-700 dark:text-white' : 'hover:bg-brand-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300' }}">Tim Kami</a>
                             </div>
                         </div>
                     </div>
@@ -147,18 +159,28 @@
 
             {{-- Mobile Links --}}
             <div class="space-y-1">
-                <a href="{{ route('welcome') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600">Beranda</a>
-                <a href="{{ route('jelajah') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600">Jelajahi</a>
+                {{-- Mobile: Beranda --}}
+                <a href="{{ route('welcome') }}" 
+                   class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->routeIs('welcome') ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600' }}">
+                   Beranda
+                </a>
+
+                {{-- Mobile: Jelajahi --}}
+                <a href="{{ route('jelajah') }}" 
+                   class="block px-3 py-2 rounded-lg text-base font-medium {{ request()->routeIs('jelajah*') ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600' }}">
+                   Jelajahi
+                </a>
                 
                 {{-- Dropdown Toggle Mobile --}}
-                <div x-data="{ subOpen: false }">
-                    <button @click="subOpen = !subOpen" class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600">
+                <div x-data="{ subOpen: {{ $isAboutActive ? 'true' : 'false' }} }">
+                    <button @click="subOpen = !subOpen" 
+                            class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-base font-medium {{ $isAboutActive ? 'bg-brand-50 text-brand-700 font-semibold dark:bg-gray-800 dark:text-brand-200' : 'text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600' }}">
                         <span>Tentang Kami</span>
                         <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': subOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div x-show="subOpen" class="pl-6 mt-1 space-y-1">
-                        <a href="{{ route('about') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600">Profil</a>
-                        <a href="{{ route('team') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600">Tim Kami</a>
+                        <a href="{{ route('about') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('about') ? 'text-brand-600 font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-brand-600' }}">Profil</a>
+                        <a href="{{ route('team') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('team') ? 'text-brand-600 font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-brand-600' }}">Tim Kami</a>
                     </div>
                 </div>
             </div>
