@@ -7,6 +7,8 @@ use App\Models\ArchiveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreArchiveRequest;
+use App\Http\Requests\UpdateArchiveRequest;
 
 class ArchiveController extends Controller
 {
@@ -58,26 +60,10 @@ class ArchiveController extends Controller
         return view('admin.archive.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreArchiveRequest $request)
     {
         \Illuminate\Support\Facades\Log::info('Archive Store Started', ['all' => $request->all(), 'files' => $request->files->all()]);
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'creator' => ['nullable', 'string', 'max:255'],
-            'subject' => ['nullable', 'string'],
-            'description' => ['nullable', 'string'],
-            'publisher' => ['nullable', 'string', 'max:255'],
-            'contributor' => ['nullable', 'string', 'max:255'],
-            'date' => ['nullable', 'date'],
-            'type' => ['nullable', 'string', 'max:255'],
-            'format' => ['nullable', 'string', 'max:255'],
-            'source' => ['nullable', 'string', 'max:255'],
-            'relation' => ['nullable', 'string', 'max:255'],
-            'reach' => ['nullable', 'string', 'max:255'],
-            'rights' => ['nullable', 'string', 'max:255'],
-            'documents' => ['required', 'array', 'min:1'],
-            'documents.*' => ['required', 'mimes:pdf', 'max:51200'],
-        ]);
+        $validated = $request->validated();
 
         $archive = Archive::create([
             'user_id' => Auth::id(),
@@ -123,27 +109,11 @@ class ArchiveController extends Controller
         return view('admin.archive.edit', compact('archive'));
     }
 
-    public function update(Request $request, Archive $archive)
+    public function update(UpdateArchiveRequest $request, Archive $archive)
     {
         $this->authorize('update', $archive);
 
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'creator' => ['nullable', 'string', 'max:255'],
-            'subject' => ['nullable', 'string'],
-            'description' => ['nullable', 'string'],
-            'publisher' => ['nullable', 'string', 'max:255'],
-            'contributor' => ['nullable', 'string', 'max:255'],
-            'date' => ['nullable', 'date'],
-            'type' => ['nullable', 'string', 'max:255'],
-            'format' => ['nullable', 'string', 'max:255'],
-            'source' => ['nullable', 'string', 'max:255'],
-            'relation' => ['nullable', 'string', 'max:255'],
-            'reach' => ['nullable', 'string', 'max:255'],
-            'rights' => ['nullable', 'string', 'max:255'],
-            'documents' => ['nullable', 'array'],
-            'documents.*' => ['nullable', 'mimes:pdf', 'max:51200'],
-        ]);
+        $validated = $request->validated();
 
         $archive->update($validated);
 

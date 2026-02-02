@@ -21,6 +21,7 @@
             cursor: grab;
             cursor: -webkit-grab;
         }
+
         #pdf-container.grabbing {
             cursor: grabbing;
             cursor: -webkit-grabbing;
@@ -31,37 +32,46 @@
             width: 12px;
             height: 12px;
         }
+
         #pdf-container::-webkit-scrollbar-track {
-            background: #151f15; /* Sesuai brand-950 */
+            background: #151f15;
+            /* Sesuai brand-950 */
         }
+
         #pdf-container::-webkit-scrollbar-thumb {
-            background-color: #324a32; /* Sesuai brand-800 */
+            background-color: #324a32;
+            /* Sesuai brand-800 */
             border-radius: 6px;
             border: 3px solid #151f15;
         }
+
         #pdf-container::-webkit-scrollbar-thumb:hover {
-            background-color: #4d744d; /* Sesuai brand-600 */
+            background-color: #4d744d;
+            /* Sesuai brand-600 */
         }
     </style>
 </head>
 
 {{-- Layout Flex Column Full Height --}}
+
 <body class="bg-brand-950 font-['Instrument_Sans'] h-screen flex flex-col overflow-hidden text-gray-100">
 
     <header class="bg-brand-900 border-b border-brand-800 shadow-md z-30 shrink-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            
+
             <div class="flex items-center gap-4 overflow-hidden">
                 @php
-                    $backRoute = (request('from') === 'admin' && auth()->check()) 
-                        ? route('admin.archive.show', $file->archive_id) 
+                    $backRoute = (request('from') === 'admin' && auth()->check())
+                        ? route('admin.archive.show', $file->archive_id)
                         : route('archive.show-guest', $file->archive_id);
                 @endphp
 
-                <a href="{{ $backRoute }}" 
-                   class="flex items-center justify-center w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-700 text-brand-200 transition-colors"
-                   title="Kembali">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                <a href="{{ $backRoute }}"
+                    class="flex items-center justify-center w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-700 text-brand-200 transition-colors"
+                    title="Kembali">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
                 </a>
 
                 <div class="flex flex-col">
@@ -74,8 +84,11 @@
 
             <div>
                 <a href="{{ route('file.download.watermark', $file->id) }}"
-                   class="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-brand-900/50">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    class="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-brand-900/50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
                     <span class="hidden sm:inline">Download</span>
                 </a>
             </div>
@@ -84,34 +97,51 @@
 
     <div class="bg-brand-800/80 backdrop-blur-sm border-b border-brand-700 z-20 shrink-0">
         <div class="max-w-7xl mx-auto px-4 h-12 flex items-center justify-center relative">
-            
+
             <div class="flex items-center bg-brand-900 rounded-md border border-brand-700 p-1 shadow-sm">
-                <button onclick="zoomOut()" class="p-1.5 text-brand-200 hover:text-white hover:bg-brand-700 rounded transition" title="Zoom Out">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                <button onclick="zoomOut()"
+                    class="p-1.5 text-brand-200 hover:text-white hover:bg-brand-700 rounded transition"
+                    title="Zoom Out">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                    </svg>
                 </button>
-                
+
                 <span id="page-info" class="mx-3 text-xs font-mono text-brand-200 w-24 text-center">Loading...</span>
-                
-                <button onclick="zoomIn()" class="p-1.5 text-brand-200 hover:text-white hover:bg-brand-700 rounded transition" title="Zoom In">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+
+                <button onclick="zoomIn()"
+                    class="p-1.5 text-brand-200 hover:text-white hover:bg-brand-700 rounded transition" title="Zoom In">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
                 </button>
             </div>
 
             <div class="hidden sm:block absolute right-4 text-xs text-brand-400">
                 <span class="flex items-center gap-1">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"></path></svg>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11">
+                        </path>
+                    </svg>
                     Klik & Geser untuk Scroll
                 </span>
             </div>
         </div>
     </div>
 
-    <div id="pdf-container" class="flex-1 relative overflow-auto bg-brand-25 p-4 sm:p-8 flex justify-center items-start">
-        
-        <div id="pdf-pages" class="flex flex-col gap-6 transition-transform duration-200 ease-out origin-top pb-20">
+    <div id="pdf-container" class="flex-1 relative overflow-auto bg-brand-25 p-4 sm:p-8 flex items-start">
+
+        <div id="pdf-pages"
+            class="mx-auto flex flex-col gap-6 transition-transform duration-200 ease-out origin-top pb-20">
             {{-- Loading State (Akan hilang setelah JS jalan) --}}
             <div class="flex flex-col items-center justify-center mt-20 text-brand-400 animate-pulse">
-                <svg class="w-10 h-10 mb-3 animate-spin text-brand-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg class="w-10 h-10 mb-3 animate-spin text-brand-500" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
                 <p>Memuat Dokumen...</p>
             </div>
         </div>
@@ -125,7 +155,7 @@
         const url = "{{ asset('storage/' . $file->archive_path) }}";
         const container = document.getElementById('pdf-pages');
         const pageInfo = document.getElementById('page-info');
-        
+
         let pdfDoc = null;
         let scale = 1.0; // Default zoom level
         let isRendering = false;
@@ -151,19 +181,39 @@
 
             for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
                 pdfDoc.getPage(pageNum).then(page => {
-                    const viewport = page.getViewport({ scale });
+                    // --- DYNAMIC RENDER QUALITY ---
+                    // Strategi: "High Quality" (2.0x) hanya saat zoom level rendah (baca mode normal).
+                    // Saat di-zoom besar (>150%), kita pakai resolusi native layar saja (1.0x - 1.5x)
+                    // untuk mencegah penggunaan RAM meledak (seperti kasus 4.4GB tadi).
 
-                    // Create Wrapper (Paper Effect)
+                    const deviceRatio = window.devicePixelRatio || 1;
+                    let renderRatio = deviceRatio;
+
+                    // Hanya supersample jika zoom dibawah 1.5 (150%)
+                    if (scale < 1.5) {
+                        renderRatio = Math.max(deviceRatio, 2.0);
+                    }
+
+                    const viewport = page.getViewport({ scale: scale * renderRatio });
+
+                    // Create Wrapper
                     const wrapper = document.createElement('div');
-                    wrapper.className = 'relative shadow-2xl shadow-black/60 bg-white'; // White paper background
-                    
+                    wrapper.className = 'relative shadow-2xl shadow-black/60 bg-white';
+
                     // Create Canvas
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    
+
+                    // Actual Canvas Size (Memory Heavy)
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
-                    canvas.className = 'block select-none'; // Prevent selection
+
+                    // Display Size (CSS)
+                    // Mengembalikan ukuran tampilan ke 'scale' yang diinginkan user
+                    canvas.style.height = (viewport.height / renderRatio) + 'px';
+                    canvas.style.width = (viewport.width / renderRatio) + 'px';
+
+                    canvas.className = 'block select-none';
 
                     wrapper.appendChild(canvas);
                     container.appendChild(wrapper);
@@ -179,7 +229,7 @@
         }
 
         function updatePageInfo() {
-            if(pdfDoc) {
+            if (pdfDoc) {
                 const percent = Math.round(scale * 100);
                 pageInfo.textContent = `${pdfDoc.numPages} Hal (${percent}%)`;
             }
@@ -187,7 +237,7 @@
 
         // --- 4. ZOOM CONTROLS ---
         function zoomIn() {
-            if (scale >= 3.0) return;
+            if (scale >= 5.0) return; // Increased limit to 500%
             scale += 0.2;
             updatePageInfo();
             renderAllPages();
@@ -229,4 +279,5 @@
         });
     </script>
 </body>
+
 </html>

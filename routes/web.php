@@ -32,6 +32,8 @@ Route::middleware('public.archive')->group(function () {
     // TEAM ROUTES
     Route::get('/tim-kami', [TeamMemberController::class, 'index'])->name('team');
     Route::get('/tim-kami/{id}', [TeamMemberController::class, 'show'])->name('team.show');
+
+
 });
 
 
