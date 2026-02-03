@@ -50,7 +50,7 @@ class ArchiveController extends Controller
     public function index()
     {
         // Mengambil semua arsip dari semua user
-        $archives = Archive::latest()->paginate(10);
+        $archives = Archive::latest()->paginate(12);
 
         return view('admin.archive.index', compact('archives'));
     }

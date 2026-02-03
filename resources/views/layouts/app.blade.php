@@ -7,8 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+        {{-- Fonts: Instrument Sans --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
@@ -21,43 +23,75 @@
         </script>
 
         <style>
-            /* Smooth transitions untuk switch dark mode */
+            [x-cloak] { display: none !important; }
             body {
-                transition: background-color 0.3s ease, color 0.3s ease;
+                font-family: 'Instrument Sans', sans-serif;
+            }
+            /* Optional: Animasi lambat untuk blob agar terasa hidup */
+            @keyframes blob-float {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                50% { transform: translate(-20px, 20px) scale(1.05); }
+            }
+            .animate-blob-slow {
+                animation: blob-float 20s infinite ease-in-out;
             }
         </style>
     </head>
-    <body class="font-sans antialiased selection:bg-brand-500/30">
-        <div class="fixed inset-0 -z-10 h-full w-full bg-white dark:bg-[#0f172a] transition-colors duration-500">
-            <div class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    <body class="font-sans antialiased text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-brand-25 selection:bg-brand-500/30 selection:text-brand-700 dark:selection:text-brand-300 overflow-x-hidden">
+        
+        {{-- 
+            =========================================
+            NEW BACKGROUND: Simple Large Blob Top Right
+            =========================================
+        --}}
+        <div class="fixed inset-0 -z-10 h-full w-full overflow-hidden pointer-events-none">
+            {{-- Base background color transition --}}
+            <div class="absolute inset-0 bg-gray-50 dark:bg-brand-25 transition-colors duration-500"></div>
+            
+            {{-- Blob Light Mode (Biru/Brand muda) --}}
+            <div class="absolute -top-[30%] -right-[10%] w-[80%] h-[80%] rounded-full bg-brand-200/60 mix-blend-multiply blur-[120px] opacity-70 dark:hidden animate-blob-slow"></div>
+            
+            {{-- Blob Dark Mode (Brand gelap, lebih subtle) --}}
+            <div class="absolute -top-[30%] -right-[10%] w-[80%] h-[80%] rounded-full bg-brand-200/60 mix-blend-soft-light blur-[130px] opacity-50 hidden dark:block animate-blob-slow"></div>
         </div>
 
-        <div class="min-h-screen">
-            <nav class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800">
+        <div class="min-h-screen flex flex-col relative">
+            
+            {{-- Navigation --}}
+            <nav class="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-800/50 supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/60">
                 @include('layouts.navigation')
             </nav>
 
-            @isset($header)
-                <header class="relative overflow-hidden">
-                    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                    {{ $header }}
-                                </h1>
-                                <div class="h-1 w-20 bg-brand-500 rounded-full"></div>
-                            </div>
-                            
-                            </div>
+            {{-- Page Header --}}
+           @isset($header)
+                <header class="relative pt-8">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {{-- 
+                            PERBAIKAN: 
+                            Menggunakan 'w-full' dan menghapus wrapper flex/h1 bawaan layout
+                            agar komponen header dari dashboard bisa leluasa mengatur posisinya (mentok kanan).
+                        --}}
+                        <div class="pb-4 w-full">
+                            {{ $header }}
+                        </div>
+                        
+                        {{-- Garis dekorasi --}}
+                        <div class="h-0.5 w-full bg-brand-600 dark:bg-brand-400 rounded-full"></div>
                     </div>
                 </header>
             @endisset
 
-            <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {{-- Main Content --}}
+            <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
                     {{ $slot }}
                 </div>
             </main>
+
+            {{-- Footer --}}
+            <footer class="py-6 text-center text-xs text-gray-400 dark:text-gray-600 z-10">
+                &copy; {{ date('Y') }} {{ config('app.name') }}.
+            </footer>
         </div>
     </body>
 </html>

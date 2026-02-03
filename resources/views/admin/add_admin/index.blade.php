@@ -1,121 +1,153 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-brand-500/10 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <div class="p-2.5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <svg class="w-6 h-6 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-black leading-tight text-gray-800 dark:text-white tracking-tight">
-                    {{ __('Manajemen Akses Admin') }}
-                </h2>
+                <div>
+                    <h2 class="text-xl font-bold leading-tight text-gray-800 dark:text-white">
+                        {{ __('Manajemen Akses') }}
+                    </h2>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        Daftar administrator yang memiliki akses sistem.
+                    </p>
+                </div>
             </div>
-            <a href="{{ route('admin.admin.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all duration-300 hover:-translate-y-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                {{ __('Daftarkan Admin') }}
-            </a>
+             <div class="flex items-center">
+                 <a href="{{ route('admin.admin.create') }}" 
+                   class="group relative inline-flex items-center justify-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold rounded-full shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 border border-brand-500 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                    <svg class="w-5 h-5 me-2 -ms-1 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    {{ __('Daftarkan Admin Baru') }}
+                </a>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="mb-8">
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-2xl border border-gray-100 dark:border-gray-700 p-6 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 h-full w-32 bg-brand-500/5 -skew-x-12 translate-x-10 group-hover:bg-brand-500/10 transition-colors"></div>
-                    <div class="flex items-center justify-between relative z-10">
+            {{-- STATS CARD --}}
+            <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="col-span-1 md:col-span-3 bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm relative overflow-hidden">
+                    <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-brand-50 dark:from-brand-900/20 to-transparent"></div>
+                    <div class="relative flex items-center justify-between">
                         <div>
-                            <p class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Kapasitas Otoritas</p>
-                            <h3 class="text-4xl font-black text-gray-900 dark:text-white mt-1">
-                                {{ $admins->total() }} <span class="text-sm font-medium text-gray-400 tracking-normal">Administrator Terdaftar</span>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total Administrator</p>
+                            <h3 class="text-3xl font-black text-gray-800 dark:text-white">
+                                {{ $admins->total() }} <span class="text-base font-medium text-gray-400">Akun Terdaftar</span>
                             </h3>
                         </div>
-                        <div class="p-4 bg-brand-50 dark:bg-brand-500/10 rounded-2xl text-brand-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
+                        <div class="h-12 w-12 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {{-- NOTIFICATIONS --}}
             @if (session('success'))
-                <div class="mb-6 flex items-center p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-xl dark:bg-emerald-900/30 dark:text-emerald-200 shadow-sm animate-in fade-in duration-500">
-                    <span class="me-3 bg-emerald-500 text-white rounded-full p-1 text-[10px]">✓</span>
+                <div class="mb-6 flex items-center p-4 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-xl dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-300 animate-in fade-in slide-in-from-top-2">
+                    <svg class="w-5 h-5 me-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                     <span class="font-bold text-sm">{{ session('success') }}</span>
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="mb-6 flex items-center p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-xl dark:bg-red-900/30 dark:text-red-200 shadow-sm">
-                    <span class="me-3 bg-red-500 text-white rounded-full p-1 text-[10px]">✕</span>
+                <div class="mb-6 flex items-center p-4 bg-red-50 border border-red-100 text-red-700 rounded-xl dark:bg-red-900/30 dark:border-red-800 dark:text-red-300">
+                    <svg class="w-5 h-5 me-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
                     <span class="font-bold text-sm">{{ session('error') }}</span>
                 </div>
             @endif
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-2xl border border-gray-100 dark:border-gray-700">
-                <table class="min-w-full divide-y divide-gray-100 dark:divide-gray-700">
-                    <thead class="bg-gray-50/50 dark:bg-gray-700/30 text-[10px] uppercase tracking-widest font-black text-gray-400 dark:text-gray-500">
-                        <tr>
-                            <th class="px-8 py-5 text-left">Nama Lengkap</th>
-                            <th class="px-8 py-5 text-left">Alamat Email</th>
-                            <th class="px-8 py-5 text-center">Kontrol Akses</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
-                        @forelse ($admins as $admin)
-                            <tr class="group hover:bg-brand-50/30 dark:hover:bg-brand-500/5 transition-all duration-200">
-                                <td class="px-8 py-5">
-                                    <div class="flex items-center">
-                                        <div class="h-9 w-9 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-600 font-bold text-sm me-3 group-hover:bg-brand-500 group-hover:text-white transition-all">
-                                            {{ strtoupper(substr($admin->name, 0, 1)) }}
+            {{-- TABLE --}}
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full whitespace-nowrap text-left">
+                        <thead>
+                            <tr class="bg-gray-50/50 dark:bg-gray-700/30 border-b border-gray-100 dark:border-gray-700">
+                                <th class="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-gray-400 dark:text-gray-500">
+                                    Identitas Admin
+                                </th>
+                                <th class="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-gray-400 dark:text-gray-500">
+                                    Alamat Email
+                                </th>
+                                <th class="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-gray-400 dark:text-gray-500 text-right">
+                                    Aksi
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                            @forelse ($admins as $admin)
+                                <tr class="group hover:bg-brand-50/30 dark:hover:bg-brand-900/10 transition-colors">
+                                    <td class="px-8 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm font-bold ring-2 ring-white dark:ring-gray-800 shadow-sm">
+                                                {{ strtoupper(substr($admin->name, 0, 1)) }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-gray-800 dark:text-white text-sm">
+                                                    {{ $admin->name }}
+                                                </div>
+                                                <div class="text-[10px] text-gray-400 font-medium">
+                                                    ID: #{{ $admin->id }}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span class="text-sm font-bold text-gray-700 dark:text-gray-200">{{ $admin->name }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-5 text-sm text-gray-500 dark:text-gray-400 font-medium">
-                                    {{ $admin->email }}
-                                </td>
-                                <td class="px-8 py-5 text-center text-sm">
-                                    <form action="{{ route('admin.admin.destroy', $admin) }}" method="POST" onsubmit="return confirm('Cabut akses admin ini? Akun akan dihapus secara permanen.')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center justify-center p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Hapus Akses">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="px-8 py-20 text-center">
-                                    <div class="flex flex-col items-center opacity-40">
-                                        <svg class="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                        </svg>
-                                        <p class="text-sm font-bold text-gray-500">Belum ada admin terdaftar.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                
+                                    </td>
+                                    <td class="px-8 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                                            {{ $admin->email }}
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-4 text-right">
+                                        <form action="{{ route('admin.admin.destroy', $admin) }}" method="POST" 
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus akses admin ini? Tindakan ini tidak dapat dibatalkan.');" 
+                                              class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="group/btn flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Hapus Akses">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="px-8 py-16 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <div class="w-16 h-16 bg-gray-50 dark:bg-gray-700/50 rounded-full flex items-center justify-center mb-4">
+                                                <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <p class="text-gray-500 font-medium text-sm">Belum ada data administrator.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Pagination Footer --}}
                 @if($admins->hasPages())
-                    <div class="px-8 py-6 bg-gray-50/30 dark:bg-gray-700/10 border-t border-gray-100 dark:border-gray-700">
+                    <div class="px-8 py-6 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
                         {{ $admins->links() }}
                     </div>
                 @endif
             </div>
 
-            <p class="mt-6 text-center text-xs text-gray-400 dark:text-gray-500 italic">
-                Aksi penghapusan bersifat permanen. Pastikan setidaknya ada satu admin aktif yang tersisa.
+            <p class="mt-6 text-center text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest font-bold">
+                Data Sensitif - Pastikan minimal satu admin aktif
             </p>
+
         </div>
     </div>
 </x-app-layout>
