@@ -7,6 +7,7 @@
     <title>{{ __('Tentang Kami') }} - {{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    <link rel="icon" href="{{ asset('storage/assets/Unpak.png') }}">
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -240,7 +241,7 @@
                         pengembangan konten sejarah.
                     </p>
                     <div class="mt-10 flex items-center justify-center">
-                        <a href="mailto:lab.sastra@unpak.ac.id"
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=lab.sastra@unpak.ac.id" target="_blank"
                             class="rounded-full bg-white px-8 py-3.5 text-sm font-bold text-brand-600 shadow-sm hover:bg-brand-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
                             Hubungi Kami
                         </a>
