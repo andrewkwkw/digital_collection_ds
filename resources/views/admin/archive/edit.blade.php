@@ -146,7 +146,7 @@
                                 <x-input-error :messages="$errors->get('creator')" class="mt-2" />
                             </div>
                             <div>
-                                <x-input-label for="date" :value="__('Tanggal Dokumen')" class="mb-1" />
+                                <x-input-label for="date" :value="__('Tahun')" class="mb-1" />
                                 <x-text-input id="date" class="block w-full" type="text" name="date" :value="old('date', $archive->date)" placeholder="Contoh: 1 Januari 2024 atau 2024-01-01" />
                                 <x-input-error :messages="$errors->get('date')" class="mt-2" />
                             </div>

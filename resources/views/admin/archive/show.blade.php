@@ -171,11 +171,21 @@
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label
-                                        class="text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1 block">Nomor/Tanggal</label>
+                                        class="text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1 block">Nomor
+                                        Dokumen</label>
                                     <p class="font-medium text-gray-700 dark:text-gray-300">
-                                        {{ $archive->date ? \Carbon\Carbon::parse($archive->date)->format('d F Y') : '-' }}
+                                        {{ $archive->number ?? '-' }}
                                     </p>
                                 </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1 block">Tahun</label>
+                                    <p class="font-medium text-gray-700 dark:text-gray-300">
+                                        {{ $archive->date ?? '-' }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1">
                                 <div>
                                     <label
                                         class="text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1 block">Pencipta</label>
