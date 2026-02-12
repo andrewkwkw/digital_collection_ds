@@ -100,12 +100,20 @@
 
                     <div class="p-6 sm:p-8 space-y-6">
 
-                        {{-- Judul --}}
-                        <div>
-                            <x-input-label for="title" :value="__('Judul Dokumen')" class="mb-1" />
-                            <x-text-input id="title" class="block w-full" type="text" name="title" :value="old('title')"
-                                required placeholder="Masukkan judul lengkap dokumen..." />
-                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        {{-- Nomor & Judul --}}
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="md:col-span-1">
+                                <x-input-label for="number" :value="__('Nomor Dokumen')" class="mb-1" />
+                                <x-text-input id="number" class="block w-full" type="text" name="number"
+                                    :value="old('number')" placeholder="Contoh: 001/SK/2024" />
+                                <x-input-error :messages="$errors->get('number')" class="mt-2" />
+                            </div>
+                            <div class="md:col-span-2">
+                                <x-input-label for="title" :value="__('Judul Dokumen')" class="mb-1" />
+                                <x-text-input id="title" class="block w-full" type="text" name="title" :value="old('title')"
+                                    required placeholder="Masukkan judul lengkap dokumen..." />
+                                <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                            </div>
                         </div>
 
                         {{-- Grid: Creator & Date --}}
@@ -118,8 +126,8 @@
                             </div>
                             <div>
                                 <x-input-label for="date" :value="__('Tanggal Dokumen')" class="mb-1" />
-                                <x-text-input id="date" class="block w-full" type="date" name="date"
-                                    :value="old('date')" />
+                                <x-text-input id="date" class="block w-full" type="text" name="date"
+                                    :value="old('date')" placeholder="Contoh: 1 Januari 2024 atau 2024-01-01" />
                                 <x-input-error :messages="$errors->get('date')" class="mt-2" />
                             </div>
                         </div>

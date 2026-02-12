@@ -22,13 +22,14 @@ class UpdateArchiveRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'number' => ['nullable', 'string', 'max:255'],
             'title' => ['required', 'string', 'max:255'],
             'creator' => ['nullable', 'string', 'max:255'],
             'subject' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'publisher' => ['nullable', 'string', 'max:255'],
             'contributor' => ['nullable', 'string', 'max:255'],
-            'date' => ['nullable', 'date'],
+            'date' => ['nullable', 'string', 'max:255'],
             'type' => ['nullable', 'string', 'max:255'],
             'format' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'string', 'max:255'],

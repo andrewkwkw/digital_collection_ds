@@ -10,6 +10,7 @@ class Archive extends Model
 {
     protected $fillable = [
         'user_id',
+        'number',
         'title',
         'creator',
         'subject',
@@ -26,7 +27,6 @@ class Archive extends Model
     ];
 
     protected $casts = [
-        'date' => 'date',
     ];
 
     public function user(): BelongsTo
@@ -38,7 +38,7 @@ class Archive extends Model
     {
         return $this->hasMany(ArchiveFile::class)->orderBy('order');
     }
-    
+
     // Keep images() for backward compatibility
     public function images(): HasMany
     {
